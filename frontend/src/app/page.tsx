@@ -1,10 +1,14 @@
 "use client";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import Login from "@/components/Login";
 import Register from "@/components/Register";
+import { GetStaticProps } from "next";
 
 export default function Home() {
   const [isLogin, setLogin] = useState(true);
+  const router = useRouter();
+
   return (
     <div className="relative py-16 bg-gradient-to-br from-sky-50 to-gray-200">
       <div className="relative container m-auto px-6 text-gray-500 md:px-12 xl:px-40">

@@ -4,6 +4,8 @@ import Loading from "./btn/Loading";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/redux/store";
 import { register } from "@/redux/features/auth-slice";
+import { useRouter } from "next/navigation";
+import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 
 export default function Register() {
   const [isHide, setHide] = useState(true);
@@ -55,8 +57,13 @@ export default function Register() {
   };
 
   const dispatch = useDispatch<AppDispatch>();
+  const router = useRouter();
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const redirect = (link: string) => {
+    router.push(link);
+  };
+
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     const emailRegex = /\S+@\S+\.\S+/;
@@ -165,20 +172,23 @@ export default function Register() {
       }));
     }
 
-    dispatch(
+    setSubmit(true);
+
+    const res = await dispatch(
       register({
         name: push.name,
         email: push.email,
         password: push.password,
         relation: push.relation,
+        redirect: redirect,
       })
     );
 
-    console.log("====================================");
-    console.log(push);
-    console.log("====================================");
+    console.log(res, "<<<<<<<<<<<<<<<<<<<");
 
-    setSubmit(true);
+    if (res) {
+      // router.push("/email-verifications");
+    }
   };
 
   const emailClassName =

@@ -1,8 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
-import { redirect } from "next/navigation";
 import Swal from "sweetalert2";
-import { useRouter } from "next/router";
 
 const baseUrl: string = "http://127.0.0.1:8000/api";
 
@@ -16,6 +14,7 @@ type payloadRegister = {
   email: string;
   password: string;
   relation: string;
+  redirect: any;
 };
 
 type payloadVerify = {
@@ -104,7 +103,8 @@ export const auth = createSlice({
             icon: "success",
             title: "Signed up successfully",
           });
-          // router.push("/email-verifications");
+
+          action.payload.redirect("/email-verifications");
         })
         .catch((error) => {
           console.log(error);
@@ -122,8 +122,10 @@ export const auth = createSlice({
           });
           Toast.fire({
             icon: "error",
-            title: error,
+            title: error.response.data.msg,
           });
+
+          return false;
         });
     },
     verify: (state, action: PayloadAction<payloadVerify>) => {
@@ -149,7 +151,6 @@ export const auth = createSlice({
             icon: "success",
             title: "Your account verified!",
           });
-          // router.push("/email-verifications");
         })
         .catch((error) => {
           console.log(error);
