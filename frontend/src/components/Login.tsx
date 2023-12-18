@@ -4,8 +4,7 @@ import Loading from "./btn/Loading";
 import { logIn, logOut } from "@/redux/features/auth-slice";
 import { useDispatch, useSelector, TypedUseSelectorHook } from "react-redux";
 import { AppDispatch, RootState, useAppSelector } from "@/redux/store";
-import Swal from "sweetalert2";
-import { log } from "console";
+import { useRouter } from "next/navigation";
 
 export default function Login() {
   const [isHide, setHide] = useState(true);
@@ -22,7 +21,7 @@ export default function Login() {
   });
 
   const dispatch = useDispatch<AppDispatch>();
-
+  const router = useRouter();
   const btnClassName =
     "text-white w-full bg-[#e4532f] hover:bg-[#e98369] focus:outline-none focus:ring-4 focus:ring-red-300 font-medium rounded-full text-sm px-6 py-2.5 text-center me-2 mb-2";
   const btnDisable =
@@ -75,7 +74,9 @@ export default function Login() {
       })
     );
 
-    setSubmit(false);
+    if (localStorage.getItem("access_token")) {
+      router.push("/dashboard");
+    }
   };
 
   const emailClassName =

@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
 import Swal from "sweetalert2";
+import { AppDispatch } from "../store";
 
 const baseUrl: string = "http://127.0.0.1:8000/api";
 
@@ -14,7 +15,6 @@ type payloadRegister = {
   email: string;
   password: string;
   relation: string;
-  redirect: any;
 };
 
 type payloadVerify = {
@@ -37,9 +37,9 @@ export const auth = createSlice({
       axios
         .post(baseUrl + "/login", action.payload)
         .then(({ data }) => {
-          console.log(data);
-
           localStorage.setItem("access_token", data.access_token);
+          localStorage.setItem("email", data.email);
+          localStorage.setItem("username", data.username);
           const Toast = Swal.mixin({
             toast: true,
             position: "top-end",
@@ -55,11 +55,6 @@ export const auth = createSlice({
             icon: "success",
             title: "Signed in successfully",
           });
-          if (data.code != 200 && !data.user.email_verified_at) {
-            // router.push("/email-verifications");
-          }
-
-          console.log("oke");
         })
         .catch((error) => {
           console.log(error);
@@ -82,51 +77,26 @@ export const auth = createSlice({
         });
     },
     register: (state, action: PayloadAction<payloadRegister>) => {
-      axios
-        .post(baseUrl + "/register", action.payload)
-        .then(({ data }) => {
-          console.log(data);
-
-          localStorage.setItem("access_token", data.access_token);
-          const Toast = Swal.mixin({
-            toast: true,
-            position: "top-end",
-            showConfirmButton: false,
-            timer: 3000,
-            timerProgressBar: true,
-            didOpen: (toast) => {
-              toast.onmouseenter = Swal.stopTimer;
-              toast.onmouseleave = Swal.resumeTimer;
-            },
-          });
-          Toast.fire({
-            icon: "success",
-            title: "Signed up successfully",
-          });
-
-          action.payload.redirect("/email-verifications");
-        })
-        .catch((error) => {
-          console.log(error);
-          localStorage.removeItem("access_token");
-          const Toast = Swal.mixin({
-            toast: true,
-            position: "top-end",
-            showConfirmButton: false,
-            timer: 3000,
-            timerProgressBar: true,
-            didOpen: (toast) => {
-              toast.onmouseenter = Swal.stopTimer;
-              toast.onmouseleave = Swal.resumeTimer;
-            },
-          });
-          Toast.fire({
-            icon: "error",
-            title: error.response.data.msg,
-          });
-
-          return false;
+      axios.post(baseUrl + "/register", action.payload).then(({ data }) => {
+        localStorage.setItem("access_token", data.access_token);
+        localStorage.setItem("email", data.email);
+        localStorage.setItem("username", data.username);
+        const Toast = Swal.mixin({
+          toast: true,
+          position: "top-end",
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.onmouseenter = Swal.stopTimer;
+            toast.onmouseleave = Swal.resumeTimer;
+          },
         });
+        Toast.fire({
+          icon: "success",
+          title: "Signed up successfully",
+        });
+      });
     },
     verify: (state, action: PayloadAction<payloadVerify>) => {
       const token = localStorage.getItem("access_token");

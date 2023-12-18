@@ -144,11 +144,11 @@ class UserController extends Controller
                 dispatch(new SendEmailQueueJob($rules['email'], $user, $otp));
 
                 return response()->json([
-                    'code' => 308,
+                    'code' => 200,
                     'user' => auth()->guard('api')->user(),
                     'otp' => $otp,
-                    'token' => $token,
-                ],308);
+                    'access_token' => $token,
+                ],200);
             }
 
             return response()->json([

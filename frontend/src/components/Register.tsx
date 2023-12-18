@@ -2,10 +2,9 @@
 import { ChangeEvent, FormEvent, useState } from "react";
 import Loading from "./btn/Loading";
 import { useDispatch } from "react-redux";
-import { AppDispatch } from "@/redux/store";
+import { AppDispatch, useAppSelector } from "@/redux/store";
 import { register } from "@/redux/features/auth-slice";
 import { useRouter } from "next/navigation";
-import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 
 export default function Register() {
   const [isHide, setHide] = useState(true);
@@ -63,7 +62,7 @@ export default function Register() {
     router.push(link);
   };
 
-  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     const emailRegex = /\S+@\S+\.\S+/;
@@ -173,21 +172,17 @@ export default function Register() {
     }
 
     setSubmit(true);
-
-    const res = await dispatch(
+    dispatch(
       register({
         name: push.name,
         email: push.email,
         password: push.password,
         relation: push.relation,
-        redirect: redirect,
       })
     );
 
-    console.log(res, "<<<<<<<<<<<<<<<<<<<");
-
-    if (res) {
-      // router.push("/email-verifications");
+    if (localStorage.getItem("access_token")) {
+      router.push("/email-verifications");
     }
   };
 
