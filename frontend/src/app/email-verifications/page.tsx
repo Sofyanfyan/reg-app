@@ -1,11 +1,25 @@
 "use client";
-import { useState } from "react";
+import { FormEvent, useState, useEffect, ChangeEvent } from "react";
+import { useDispatch } from "react-redux";
+import { verify } from "@/redux/features/auth-slice";
+import { AppDispatch } from "@/redux/store";
+import Swal from "sweetalert2";
 
 export default function EmailVerification() {
-  const [otp, setOtp] = useState();
+  const [otp, setOtp] = useState({
+    code_1: "",
+    code_2: "",
+    code_3: "",
+    code_4: "",
+    code_5: "",
+    code_6: "",
+  });
+  const [email, setEmail] = useState("Invalid email");
+  const dispatch = useDispatch<AppDispatch>();
 
   const focusNextInput = (el: number, prevId: string, nextId: string) => {
     // console.log(+el.value.length);
+
     if (+el == 0) {
       // console.log("masuk if");
       document.getElementById(prevId)?.focus();
@@ -13,6 +27,42 @@ export default function EmailVerification() {
       // console.log("masuk else");
       document.getElementById(nextId)?.focus();
     }
+  };
+
+  useEffect(() => {
+    let value = localStorage.getItem("email") || "Invalid email";
+    setEmail(value);
+  }, []);
+
+  const handleEventChange = (event: ChangeEvent<HTMLInputElement>) => {
+    event.preventDefault();
+
+    const { value, name } = event.target;
+
+    setOtp((prevState) => ({ ...prevState, [name]: value }));
+  };
+
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const code =
+      otp.code_1 +
+      otp.code_2 +
+      otp.code_3 +
+      otp.code_4 +
+      otp.code_5 +
+      otp.code_6;
+
+    console.log(code);
+
+    dispatch(
+      verify({
+        otp: +code,
+      })
+    );
+  };
+
+  const handleResend = () => {
+    console.log("ketrigger");
   };
 
   return (
@@ -37,17 +87,16 @@ export default function EmailVerification() {
           </div>
         </div>
         <div className="p-5 w-full">
-          <form className="max-w-md flex flex-col justify-center m-auto space-y-6">
+          <form
+            onSubmit={handleSubmit}
+            className="max-w-md flex flex-col justify-center m-auto space-y-6"
+          >
             <p
               id="helper-text-explanation"
               className="mt-2 text-md text-gray-700 text-center"
             >
               We send you the six digit code to
-              <span className="text-gray-700 font-bold">
-                {" "}
-                example@email.com
-              </span>
-              .
+              <span className="text-gray-700 font-bold"> {email}</span>.
             </p>
             <div className="flex justify-center space-x-3 rtl:space-x-reverse">
               <div>
@@ -55,6 +104,8 @@ export default function EmailVerification() {
                 <input
                   type="text"
                   maxLength={1}
+                  name="code_1"
+                  onChange={handleEventChange}
                   onKeyUp={(e) =>
                     focusNextInput(
                       e.currentTarget.value.length,
@@ -73,6 +124,8 @@ export default function EmailVerification() {
                 <input
                   type="text"
                   maxLength={1}
+                  name="code_2"
+                  onChange={handleEventChange}
                   onKeyUp={(e) =>
                     focusNextInput(
                       e.currentTarget.value.length,
@@ -91,6 +144,8 @@ export default function EmailVerification() {
                 <input
                   type="text"
                   maxLength={1}
+                  name="code_3"
+                  onChange={handleEventChange}
                   onKeyUp={(e) =>
                     focusNextInput(
                       e.currentTarget.value.length,
@@ -109,6 +164,8 @@ export default function EmailVerification() {
                 <input
                   type="text"
                   maxLength={1}
+                  name="code_4"
+                  onChange={handleEventChange}
                   onKeyUp={(e) =>
                     focusNextInput(
                       e.currentTarget.value.length,
@@ -127,6 +184,8 @@ export default function EmailVerification() {
                 <input
                   type="text"
                   maxLength={1}
+                  name="code_5"
+                  onChange={handleEventChange}
                   onKeyUp={(e) =>
                     focusNextInput(
                       e.currentTarget.value.length,
@@ -145,6 +204,8 @@ export default function EmailVerification() {
                 <input
                   type="text"
                   maxLength={1}
+                  name="code_6"
+                  onChange={handleEventChange}
                   onKeyUp={(e) =>
                     focusNextInput(
                       e.currentTarget.value.length,
@@ -172,7 +233,12 @@ export default function EmailVerification() {
               </p>
               <p className="mt-2 text-md text-gray-700 text-center">
                 If you haven't received the code, you can{" "}
-                <span className="text-[#ee913b] font-semibold">resend it</span>
+                <span
+                  className="text-[#ee913b] font-semibold hover:cursor-pointer"
+                  onClick={handleResend}
+                >
+                  resend it
+                </span>
               </p>
             </div>
           </form>

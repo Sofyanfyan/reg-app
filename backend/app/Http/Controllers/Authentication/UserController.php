@@ -214,7 +214,7 @@ class UserController extends Controller
             return response()->json([
                 'code' => 200,
                 'msg' => 'Success verified account',
-            ], 500);
+            ], 200);
 
         } catch (Exception $err) {
             DB::rollBack();
@@ -225,17 +225,33 @@ class UserController extends Controller
         }
     }
 
-
-    public function test(Request $request){
+    public function resendEmail() {
         try {
             //code...
-            return "masuk dash";
-            
+
+            $user = auth()->guard('api')->user();
+
+            VerificationCode::where('user_id', $user->id)->update([
+                'otp' => rand(100000, 999999),
+                'expire_at' => Carbon::now()->addMinutes(7)->setTimezone('Asia/Jakarta'),
+            ]);
+
+            $otp = VerificationCode::where('user_id', $user->id)->first();
+
+            dispatch(new SendEmailQueueJob($user->email, $user, $otp));
+
+            return response()->json([
+                'code' => 200,
+                'user' => auth()->guard('api')->user(),
+                'otp' => $otp,
+            ],200);
+
 
         } catch (Exception $err) {
+            
             return response()->json([
                 'code' => 500,
-                'msg' => 'Internal server error',
+                'msg' => "Internal server error",
             ], 500);
         }
     }

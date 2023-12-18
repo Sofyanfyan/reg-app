@@ -1,7 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
 import Swal from "sweetalert2";
-import { AppDispatch } from "../store";
 
 const baseUrl: string = "http://127.0.0.1:8000/api";
 
@@ -38,8 +37,8 @@ export const auth = createSlice({
         .post(baseUrl + "/login", action.payload)
         .then(({ data }) => {
           localStorage.setItem("access_token", data.access_token);
-          localStorage.setItem("email", data.email);
-          localStorage.setItem("username", data.username);
+          localStorage.setItem("email", data.user.email);
+          localStorage.setItem("name", data.user.name);
           const Toast = Swal.mixin({
             toast: true,
             position: "top-end",
@@ -79,8 +78,8 @@ export const auth = createSlice({
     register: (state, action: PayloadAction<payloadRegister>) => {
       axios.post(baseUrl + "/register", action.payload).then(({ data }) => {
         localStorage.setItem("access_token", data.access_token);
-        localStorage.setItem("email", data.email);
-        localStorage.setItem("username", data.username);
+        localStorage.setItem("email", data.user.email);
+        localStorage.setItem("name", data.user.name);
         const Toast = Swal.mixin({
           toast: true,
           position: "top-end",
@@ -144,5 +143,5 @@ export const auth = createSlice({
   },
 });
 
-export const { logIn, logOut, register } = auth.actions;
+export const { logIn, logOut, register, verify } = auth.actions;
 export default auth.reducer;
