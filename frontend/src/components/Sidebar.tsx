@@ -16,7 +16,8 @@ export default function Sidebar({ ...props }) {
         aria-label="Sidebar"
       >
         <div className="h-full px-3 pb-4 overflow-y-auto bg-white dark:bg-gray-800">
-          <ul className="space-y-2 font-medium">
+          <h1>Dashboard</h1>
+          <ul className="pt-4 mt-4 space-y-2 font-medium border-t border-gray-200">
             <li>
               <a
                 href="#"
