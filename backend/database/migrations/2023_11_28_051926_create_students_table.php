@@ -19,6 +19,8 @@ return new class extends Migration
             $table->foreign('father_id')->references('id')->on('fathers')->cascadeOnDelete()->cascadeOnUpdate();
             $table->unsignedBigInteger('mother_id');
             $table->foreign('mother_id')->references('id')->on('mothers')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users')->cascadeOnDelete()->cascadeOnUpdate();
             $table->boolean('is_active');
             $table->string('unique_id')->unique();  
             $table->string('name');
