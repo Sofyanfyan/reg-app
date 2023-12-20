@@ -29,7 +29,7 @@ export default function Sidebar({ ...props }) {
                 />
               </div> */}
 
-              <div className="relative inline-flex items-center justify-center w-24 h-24 overflow-hidden bg-gray-100 rounded-full dark:bg-gray-600">
+              <div className="relative inline-flex items-center justify-center w-24 h-24 overflow-hidden bg-gray-300 rounded-full dark:bg-gray-600">
                 <span className="text-4xl text-gray-600 dark:text-gray-300">
                   {initial}
                 </span>
