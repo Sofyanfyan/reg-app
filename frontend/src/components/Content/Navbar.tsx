@@ -1,16 +1,44 @@
 "use state";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Sidebar from "./Sidebar";
 
-export default function Navbar() {
+export default function Navbar({ ...stateSidebar }) {
   const [state, setState] = useState(false);
+  const [username, setUsername] = useState("Unknown");
+  const [initial, setInitial] = useState("?");
+
+  useEffect(() => {
+    const user: string = localStorage.getItem("name") || "Unknown";
+
+    user ? setUsername(user) : null;
+
+    const split = username.split(" ");
+
+    if (split.length > 1) {
+      setInitial(
+        split[0].charAt(0).toLocaleUpperCase() +
+          split[1].charAt(0).toLocaleUpperCase()
+      );
+    } else {
+      setInitial(split[0].charAt(0).toLocaleUpperCase());
+    }
+  });
+
   const handleOpenSidebar = () => {
     setState(!state);
   };
 
-  const props: any = {
+  type PropsSidebar = {
+    state: boolean;
+    username: string;
+    initial: string;
+  };
+
+  const props: PropsSidebar = {
     // make sure all required component's inputs/Props keys&types match
     state,
+    username,
+    initial,
   };
 
   const Strip3 = (
@@ -29,6 +57,36 @@ export default function Navbar() {
     </svg>
   );
 
+  const CrossIcon = (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      x="0px"
+      y="0px"
+      className="w-6 h-6"
+      viewBox="0,0,256,256"
+    >
+      <g
+        fill="#666666"
+        fillRule="nonzero"
+        stroke="none"
+        strokeWidth="1"
+        strokeLinecap="butt"
+        strokeLinejoin="miter"
+        strokeMiterlimit="10"
+        strokeDasharray=""
+        strokeDashoffset="0"
+        fontFamily="none"
+        fontWeight="none"
+        fontSize="none"
+        textAnchor="none"
+      >
+        <g transform="scale(5.12,5.12)">
+          <path d="M7.70703,6.29297l-1.41406,1.41406l17.29297,17.29297l-17.29297,17.29297l1.41406,1.41406l17.29297,-17.29297l17.29297,17.29297l1.41406,-1.41406l-17.29297,-17.29297l17.29297,-17.29297l-1.41406,-1.41406l-17.29297,17.29297z"></path>
+        </g>
+      </g>
+    </svg>
+  );
+
   return (
     <>
       <nav className="fixed top-0 z-50 w-full bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700">
@@ -43,12 +101,8 @@ export default function Navbar() {
                 onClick={handleOpenSidebar}
                 className="inline-flex items-center p-2 text-sm sm:hidden text-gray-500 rounded-lg hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200"
               >
-                <span className="sr-only">Open sidebar</span>
-                {state ? (
-                  <i className="fa-solid fa-xmark fa-beat-fade fa-2xl"></i>
-                ) : (
-                  Strip3
-                )}
+                {/* <span className="sr-only">Open sidebar</span> */}
+                {state ? CrossIcon : Strip3}
               </button>
               <div className="flex ms-2 md:me-24">
                 {/* <img
@@ -64,19 +118,24 @@ export default function Navbar() {
             <div className="flex items-center">
               <div className="flex items-center ms-3">
                 <div>
-                  <button
-                    type="button"
+                  <div
                     className="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
                     aria-expanded="true"
                     data-dropdown-toggle="dropdown-user"
                   >
-                    <span className="sr-only">Open user menu</span>
+                    {/* <span className="sr-only">Open user menu</span>
                     <img
                       className="w-8 h-8 rounded-full"
                       src="https://flowbite.com/docs/images/people/profile-picture-5.jpg"
                       alt="user photo"
-                    />
-                  </button>
+                    /> */}
+
+                    <div className="relative inline-flex items-center justify-center w-8 h-8 overflow-hidden bg-gray-100 rounded-full dark:bg-gray-600">
+                      <span className="font-medium text-gray-600 dark:text-gray-300">
+                        {initial}
+                      </span>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>

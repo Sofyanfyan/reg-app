@@ -1,6 +1,6 @@
 "use client";
 import { ChangeEvent, FormEvent, useState } from "react";
-import Loading from "./btn/Loading";
+import Loading from "../btn/Loading";
 import { logIn, logOut } from "@/redux/features/auth-slice";
 import { useDispatch, useSelector, TypedUseSelectorHook } from "react-redux";
 import { AppDispatch, RootState, useAppSelector } from "@/redux/store";
@@ -75,7 +75,7 @@ export default function Login() {
     );
 
     if (localStorage.getItem("access_token")) {
-      router.push("/dashboard");
+      router.push("/users");
     }
   };
 
