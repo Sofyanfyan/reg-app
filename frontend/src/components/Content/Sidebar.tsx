@@ -1,4 +1,5 @@
 "use client";
+import Link from "next/link";
 
 export default function Sidebar({ ...props }) {
   const { state, username, initial } = props;
@@ -35,7 +36,7 @@ export default function Sidebar({ ...props }) {
                 </span>
               </div>
 
-              <h6>{username}</h6>
+              <h6 className="text-gray-800">{username}</h6>
 
               <button
                 type="button"
@@ -48,8 +49,8 @@ export default function Sidebar({ ...props }) {
           </div>
           <ul className="pt-4 mt-4 space-y-2 font-medium border-t border-gray-200">
             <li>
-              <a
-                href="#"
+              <Link
+                href="/users/registers"
                 className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
               >
                 <svg
@@ -67,11 +68,11 @@ export default function Sidebar({ ...props }) {
                 <span className="inline-flex items-center justify-center px-2 ms-3 text-sm font-medium text-gray-800 bg-gray-100 rounded-full dark:bg-gray-700 dark:text-gray-300">
                   Student
                 </span>
-              </a>
+              </Link>
             </li>
             <li>
-              <a
-                href="#"
+              <Link
+                href="/users"
                 className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
               >
                 <svg
@@ -84,7 +85,7 @@ export default function Sidebar({ ...props }) {
                   <path d="M6.143 0H1.857A1.857 1.857 0 0 0 0 1.857v4.286C0 7.169.831 8 1.857 8h4.286A1.857 1.857 0 0 0 8 6.143V1.857A1.857 1.857 0 0 0 6.143 0Zm10 0h-4.286A1.857 1.857 0 0 0 10 1.857v4.286C10 7.169 10.831 8 11.857 8h4.286A1.857 1.857 0 0 0 18 6.143V1.857A1.857 1.857 0 0 0 16.143 0Zm-10 10H1.857A1.857 1.857 0 0 0 0 11.857v4.286C0 17.169.831 18 1.857 18h4.286A1.857 1.857 0 0 0 8 16.143v-4.286A1.857 1.857 0 0 0 6.143 10Zm10 0h-4.286A1.857 1.857 0 0 0 10 11.857v4.286c0 1.026.831 1.857 1.857 1.857h4.286A1.857 1.857 0 0 0 18 16.143v-4.286A1.857 1.857 0 0 0 16.143 10Z" />
                 </svg>
                 <span className="flex-1 ms-3 whitespace-nowrap">Dashboard</span>
-              </a>
+              </Link>
             </li>
           </ul>
         </div>
