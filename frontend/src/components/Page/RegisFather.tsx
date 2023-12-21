@@ -1,11 +1,19 @@
 "use client";
+
 import { FormEvent } from "react";
 
-export default function RegisStudent({ ...props }) {
+export default function RegisFather({ ...props }) {
   const { setIdx, setForm } = props;
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log("Next");
+    console.log("Banteng");
+    setIdx(3);
+    setForm("b/s");
+  };
+
+  const handlePrev = (event: FormEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    console.log("prev");
     setIdx(2);
     setForm("mother");
   };
@@ -13,7 +21,7 @@ export default function RegisStudent({ ...props }) {
   return (
     <div className="w-full p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8">
       <form className="space-y-6" onSubmit={handleSubmit}>
-        <h5 className="text-xl font-medium text-gray-900">Student form</h5>
+        <h5 className="text-xl font-medium text-gray-900">Father form</h5>
         <div className="grid lg:grid-cols-2 gap-4">
           <div>
             <label className="block mb-2 text-sm font-medium text-gray-900">
@@ -42,14 +50,15 @@ export default function RegisStudent({ ...props }) {
             />
           </div>
         </div>
-        <div className="flex justify-end">
-          {/* <button
+        <div className="flex justify-between">
+          <button
             type="button"
+            onClick={handlePrev}
             className="max-w-lg text-white bg-[#e07c39] hover:bg-[#e25d04ee] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
           >
             <i className="fa-solid fa-chevron-right fa-rotate-180 me-2"></i>
             Previous
-          </button> */}
+          </button>
           <button
             type="submit"
             className="max-w-lg text-white bg-[#e07c39] hover:bg-[#e25d04ee] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"

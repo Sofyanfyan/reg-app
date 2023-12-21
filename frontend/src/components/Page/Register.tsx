@@ -2,7 +2,7 @@
 import { ChangeEvent, FormEvent, useState } from "react";
 import Loading from "../btn/Loading";
 import { useDispatch } from "react-redux";
-import { AppDispatch, useAppSelector } from "@/redux/store";
+import { AppDispatch } from "@/redux/store";
 import { register } from "@/redux/features/auth-slice";
 import { useRouter } from "next/navigation";
 
