@@ -8,6 +8,8 @@ import {
   DropdownChangeEvent,
   DropdownPassThroughMethodOptions,
 } from "primereact/dropdown";
+import foramtedDate from "@/helpers/formatedDate";
+import reqStudent from "@/helpers/request/handleRegister";
 
 export default function RegisStudent({ ...props }) {
   const { setIdx, setForm } = props;
@@ -20,11 +22,9 @@ export default function RegisStudent({ ...props }) {
     gender: "",
     religion: "",
     place_birth: "",
-    date_birth: "",
     id_or_passport: "",
     nationality: "",
     place_of_issue: "",
-    date_exp: "",
   });
 
   const [error, setError] = useState({
@@ -40,26 +40,22 @@ export default function RegisStudent({ ...props }) {
     date_exp: "",
   });
 
-  type Options = {
-    name: string;
-  };
+  const gender: string[] = ["Female", "Male"];
 
-  const gender: Options[] = [{ name: "Female" }, { name: "Male" }];
-
-  const religion: Options[] = [
-    { name: "Islam" },
-    { name: "Christianity" },
-    { name: "Catholicism" },
-    { name: "Hinduism" },
-    { name: "Buddhism" },
-    { name: "Confucianism" },
+  const religion: string[] = [
+    "Islam",
+    "Christianity",
+    "Catholicism",
+    "Hinduism",
+    "Buddhism",
+    "Confucianism",
   ];
-  const grade: Options[] = [
-    { name: "Nursery" },
-    { name: "Toddlers" },
-    { name: "Primary" },
-    { name: "Secondary" },
-    { name: "IGCSE" },
+  const grade: string[] = [
+    "Nursery",
+    "Toddlers",
+    "Primary",
+    "Secondary",
+    "IGCSE",
   ];
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -77,14 +73,33 @@ export default function RegisStudent({ ...props }) {
 
   const onSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log(dateBirth);
+
+    if (dateBirth) {
+      const value = foramtedDate(dateBirth);
+      if (value) {
+        setStudent((prevState) => ({
+          ...prevState,
+          date_birth: value,
+        }));
+      }
+    }
+
+    if (dateExp) {
+      const value = foramtedDate(dateExp);
+      if (value) {
+        setStudent((prevState) => ({
+          ...prevState,
+          date_exp: value,
+        }));
+      }
+    }
+
     const {
       grade_id,
       name,
       gender,
       religion,
       place_birth,
-      date_birth,
       id_or_passport,
       nationality,
     } = student;
@@ -95,7 +110,7 @@ export default function RegisStudent({ ...props }) {
       !religion ||
       !grade_id ||
       !place_birth ||
-      !date_birth ||
+      !dateBirth ||
       !id_or_passport ||
       !nationality
     ) {
@@ -137,7 +152,7 @@ export default function RegisStudent({ ...props }) {
           place_birth: "Place of birth is required",
         }));
       }
-      if (!date_birth) {
+      if (!dateBirth) {
         setError((prevState) => ({
           ...prevState,
           date_birth: "Date of birth is required",
@@ -174,6 +189,7 @@ export default function RegisStudent({ ...props }) {
     console.log("Next");
     setIdx(2);
     setForm("mother");
+    reqStudent(student);
   };
 
   return (
@@ -246,7 +262,6 @@ export default function RegisStudent({ ...props }) {
               onChange={handleChangeSelect}
               options={gender}
               name="gender"
-              optionLabel="name"
               placeholder="Select a Gender"
               className={
                 error.gender
@@ -277,7 +292,6 @@ export default function RegisStudent({ ...props }) {
               onChange={handleChangeSelect}
               options={religion}
               name="religion"
-              optionLabel="name"
               placeholder="Select a Religion"
               className={
                 error.religion
@@ -308,7 +322,6 @@ export default function RegisStudent({ ...props }) {
               options={grade}
               // rules={{ required: "Grade is required." }}
               name="grade_id"
-              optionLabel="name"
               placeholder="Select a Grade"
               className={
                 error.grade_id

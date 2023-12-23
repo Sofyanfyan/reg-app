@@ -1,9 +1,25 @@
 "use client";
 
-import { FormEvent } from "react";
+import { FormEvent, useState } from "react";
 
 export default function RegisMother({ ...props }) {
   const { setIdx, setForm } = props;
+  const [mother, setMother] = useState({
+    name: "",
+    place_birth: "",
+    religion: "",
+    date_birth: "",
+    occupation: "",
+    company_name: "",
+    company_address: "",
+    home_address: "",
+    telephone: "",
+    mobilephone: "",
+    id_or_passport: "",
+    nationality: "",
+    phone: "",
+    email: "",
+  });
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
