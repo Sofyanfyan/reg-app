@@ -1,9 +1,26 @@
 "use client";
 
-import { FormEvent } from "react";
+import { Calendar } from "primereact/calendar";
+import { InputText } from "primereact/inputtext";
+import { Nullable } from "primereact/ts-helpers";
+import { ChangeEvent, FormEvent, useState } from "react";
 
 export default function RegisBrotherSister({ ...props }) {
   const { setIdx, setForm } = props;
+  const [dateBirth, setDateBirth] = useState<Nullable<Date>>();
+
+  const [user, setUser] = useState({
+    name: "",
+    date_birth: "",
+    grade: "",
+  });
+  const [error, setError] = useState({
+    name: "",
+    date_birth: "",
+    grade: "",
+  });
+
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {};
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -15,7 +32,7 @@ export default function RegisBrotherSister({ ...props }) {
     event.preventDefault();
     console.log("prev");
     setIdx(2);
-    setForm("father");
+    setForm("user");
   };
 
   return (
@@ -27,29 +44,52 @@ export default function RegisBrotherSister({ ...props }) {
         <div className="grid lg:grid-cols-2 gap-4">
           <div>
             <label className="block mb-2 text-sm font-medium text-gray-900">
-              Fullname
+              Fullname <span style={{ color: "red" }}>*</span>
             </label>
-            <input
-              type="text"
+            <InputText
+              id="name"
               name="name"
-              id="text"
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400"
-              placeholder="Name"
+              placeholder="Enter Fullname"
+              className={
+                error.name
+                  ? "bg-gray-50 border border-red-300 text-md text-slate-600 rounded-lg block w-full p-3"
+                  : "bg-gray-50 border border-gray-300 text-md text-slate-600 rounded-lg block w-full p-3"
+              }
+              value={user.name}
+              onChange={handleChange}
+              autoComplete="off"
               required
             />
+            {error.name && (
+              <small className="ms-1 text-red-600">{error.name}</small>
+            )}
           </div>
           <div>
             <label className="block mb-2 text-sm font-medium text-gray-900">
-              NIK/Passport
+              Date of Birth <span style={{ color: "red" }}>*</span>
             </label>
-            <input
-              type="text"
-              name="id_or_passport"
-              id="text"
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400"
-              placeholder="NIK / Passport"
+            <Calendar
+              id="date_birth"
+              name="date_birth"
+              ariaLabelledBy="date_birth"
+              inputClassName={
+                error.date_birth
+                  ? "w-full bg-gray-50 border border-red-300 text-gray-900 text-md rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-3.5"
+                  : "w-full bg-gray-50 border border-gray-300 text-gray-900 text-md rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-3.5"
+              }
+              style={{ width: "100%" }}
+              value={dateBirth}
+              onChange={(e) => setDateBirth(e.value)}
+              placeholder="Date of birth"
+              dateFormat="dd/mm/yy"
+              locale="en"
+              mask="99/99/9999"
+              showButtonBar
               required
             />
+            {error.date_birth && (
+              <small className="ms-1 text-red-600">{error.date_birth}</small>
+            )}
           </div>
         </div>
         <div className="flex justify-between">

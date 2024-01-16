@@ -1,6 +1,11 @@
 "use client";
 
-import { ChangeEvent, FormEvent, useState } from "react";
+import {
+  ChangeEvent,
+  FormEvent,
+  TextareaHTMLAttributes,
+  useState,
+} from "react";
 import { InputText } from "primereact/inputtext";
 import { Calendar } from "primereact/calendar";
 import { Nullable } from "primereact/ts-helpers";
@@ -9,6 +14,8 @@ import {
   DropdownChangeEvent,
   DropdownPassThroughMethodOptions,
 } from "primereact/dropdown";
+import { InputTextarea } from "primereact/inputtextarea";
+import { log } from "console";
 
 export default function RegisMother({ ...props }) {
   const { setIdx, setForm } = props;
@@ -71,6 +78,14 @@ export default function RegisMother({ ...props }) {
     setMother((prevState) => ({ ...prevState, [name]: value }));
   };
 
+  const handleChangeTextArea = (event: ChangeEvent<HTMLTextAreaElement>) => {
+    event.preventDefault();
+
+    // console.log(event.target.value);
+    const { value, name } = event.target;
+    setMother((prevState) => ({ ...prevState, [name]: value }));
+  };
+
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     console.log("Next");
@@ -92,7 +107,7 @@ export default function RegisMother({ ...props }) {
         <div className="grid lg:grid-cols-2 gap-4">
           <div>
             <label className="block mb-2 text-sm font-medium text-gray-900">
-              Fullname
+              Fullname <span style={{ color: "red" }}>*</span>
             </label>
             <InputText
               id="name"
@@ -114,14 +129,14 @@ export default function RegisMother({ ...props }) {
           </div>
           <div>
             <label className="block mb-2 text-sm font-medium text-gray-900">
-              NIK/Passport
+              NIK/Passport <span style={{ color: "red" }}>*</span>
             </label>
             <InputText
               id="id_or_passport"
               name="id_or_passport"
               placeholder="Enter NIK/Passport"
               className={
-                error.name
+                error.id_or_passport
                   ? "bg-gray-50 border border-red-300 text-md text-slate-600 rounded-lg block w-full p-3"
                   : "bg-gray-50 border border-gray-300 text-md text-slate-600 rounded-lg block w-full p-3"
               }
@@ -130,7 +145,7 @@ export default function RegisMother({ ...props }) {
               autoComplete="off"
               required
             />
-            {error.name && (
+            {error.id_or_passport && (
               <small className="ms-1 text-red-600">
                 {error.id_or_passport}
               </small>
@@ -140,14 +155,14 @@ export default function RegisMother({ ...props }) {
         <div className="grid lg:grid-cols-4 gap-4">
           <div>
             <label className="block mb-2 text-sm font-medium text-gray-900">
-              Nationality
+              Nationality <span style={{ color: "red" }}>*</span>
             </label>
             <InputText
               id="nationality"
               name="nationality"
               placeholder="Enter Nationality"
               className={
-                error.name
+                error.nationality
                   ? "bg-gray-50 border border-red-300 text-md text-slate-600 rounded-lg block w-full p-3"
                   : "bg-gray-50 border border-gray-300 text-md text-slate-600 rounded-lg block w-full p-3"
               }
@@ -156,20 +171,20 @@ export default function RegisMother({ ...props }) {
               autoComplete="off"
               required
             />
-            {error.name && (
+            {error.nationality && (
               <small className="ms-1 text-red-600">{error.nationality}</small>
             )}
           </div>
           <div>
             <label className="block mb-2 text-sm font-medium text-gray-900">
-              Place of Birth
+              Place of Birth <span style={{ color: "red" }}>*</span>
             </label>
             <InputText
               id="place_birth"
               name="place_birth"
               placeholder="Enter place of Birth"
               className={
-                error.name
+                error.place_birth
                   ? "bg-gray-50 border border-red-300 text-md text-slate-600 rounded-lg block w-full p-3"
                   : "bg-gray-50 border border-gray-300 text-md text-slate-600 rounded-lg block w-full p-3"
               }
@@ -178,13 +193,13 @@ export default function RegisMother({ ...props }) {
               autoComplete="off"
               required
             />
-            {error.name && (
+            {error.place_birth && (
               <small className="ms-1 text-red-600">{error.place_birth}</small>
             )}
           </div>
           <div>
             <label className="block mb-2 text-sm font-medium text-gray-900">
-              Place of Birth
+              Date of Birth <span style={{ color: "red" }}>*</span>
             </label>
             <Calendar
               id="date_birth"
@@ -205,13 +220,13 @@ export default function RegisMother({ ...props }) {
               showButtonBar
               required
             />
-            {error.name && (
-              <small className="ms-1 text-red-600">{error.place_birth}</small>
+            {error.date_birth && (
+              <small className="ms-1 text-red-600">{error.date_birth}</small>
             )}
           </div>
           <div>
             <label className="block mb-2 text-sm font-medium text-gray-900">
-              Religion
+              Religion <span style={{ color: "red" }}>*</span>
             </label>
             <Dropdown
               value={mother.religion}
@@ -239,34 +254,187 @@ export default function RegisMother({ ...props }) {
             )}
           </div>
         </div>
-        <br />
-        <br />
+        <br className="hidden lg:block" />
+        <br className="hidden lg:block" />
         <div className="grid lg:grid-cols-2 gap-4">
           <div>
             <label className="block mb-2 text-sm font-medium text-gray-900">
-              NIK/Passport
+              Company Name
             </label>
             <InputText
-              id="id_or_passport"
-              name="id_or_passport"
-              placeholder="Enter NIK/Passport"
+              id="company_name"
+              name="company_name"
+              placeholder="Enter Company Name"
               className={
-                error.name
+                error.company_name
                   ? "bg-gray-50 border border-red-300 text-md text-slate-600 rounded-lg block w-full p-3"
                   : "bg-gray-50 border border-gray-300 text-md text-slate-600 rounded-lg block w-full p-3"
               }
-              value={mother.id_or_passport}
+              value={mother.company_name}
               onChange={handleChange}
               autoComplete="off"
               required
             />
-            {error.name && (
+            {error.company_name && (
+              <small className="ms-1 text-red-600">{error.company_name}</small>
+            )}
+          </div>
+          <div>
+            <label className="block mb-2 text-sm font-medium text-gray-900">
+              Company Phone
+            </label>
+            <InputText
+              id="phone"
+              name="phone"
+              placeholder="Enter Company Phone"
+              className={
+                error.phone
+                  ? "bg-gray-50 border border-red-300 text-md text-slate-600 rounded-lg block w-full p-3"
+                  : "bg-gray-50 border border-gray-300 text-md text-slate-600 rounded-lg block w-full p-3"
+              }
+              value={mother.phone}
+              onChange={handleChange}
+              autoComplete="off"
+              required
+            />
+            {error.phone && (
+              <small className="ms-1 text-red-600">{error.phone}</small>
+            )}
+          </div>
+        </div>
+        <div className="grid lg:grid-cols-1 gap-4">
+          <div>
+            <label className="block mb-2 text-sm font-medium text-gray-900">
+              Company Address
+            </label>
+            <InputTextarea
+              id="home_address"
+              name="home_address"
+              placeholder="Enter Company Address"
+              className={
+                error.home_address
+                  ? "bg-gray-50 border border-red-300 text-md text-slate-600 rounded-lg block w-full p-3"
+                  : "bg-gray-50 border border-gray-300 text-md text-slate-600 rounded-lg block w-full p-3"
+              }
+              value={mother.home_address}
+              onChange={handleChangeTextArea}
+              autoComplete="off"
+              rows={5}
+              autoResize
+              required
+            />
+            {error.home_address && (
+              <small className="ms-1 text-red-600">{error.home_address}</small>
+            )}
+          </div>
+        </div>
+
+        <br className="hidden lg:block" />
+        <br className="hidden lg:block" />
+
+        <div className="grid lg:grid-cols-3 gap-4">
+          <div>
+            <label className="block mb-2 text-sm font-medium text-gray-900">
+              Telephone
+            </label>
+            <InputText
+              id="telephone"
+              name="telephone"
+              placeholder="Enter Telephone"
+              className={
+                error.telephone
+                  ? "bg-gray-50 border border-red-300 text-md text-slate-600 rounded-lg block w-full p-3"
+                  : "bg-gray-50 border border-gray-300 text-md text-slate-600 rounded-lg block w-full p-3"
+              }
+              value={mother.telephone}
+              onChange={handleChange}
+              autoComplete="off"
+              required
+            />
+            {error.telephone && (
+              <small className="ms-1 text-red-600">{error.telephone}</small>
+            )}
+          </div>
+          <div>
+            <label className="block mb-2 text-sm font-medium text-gray-900">
+              Mobilephone <span style={{ color: "red" }}>*</span>
+            </label>
+            <InputText
+              id="mobilephone"
+              name="mobilephone"
+              placeholder="Enter mobilephone"
+              className={
+                error.mobilephone
+                  ? "bg-gray-50 border border-red-300 text-md text-slate-600 rounded-lg block w-full p-3"
+                  : "bg-gray-50 border border-gray-300 text-md text-slate-600 rounded-lg block w-full p-3"
+              }
+              value={mother.mobilephone}
+              onChange={handleChange}
+              autoComplete="off"
+              required
+            />
+            {error.mobilephone && (
+              <small className="ms-1 text-red-600">{error.mobilephone}</small>
+            )}
+          </div>
+          <div>
+            <label className="block mb-2 text-sm font-medium text-gray-900">
+              Email <span style={{ color: "red" }}>*</span>
+            </label>
+            <div className="p-inputgroup flex-1">
+              <span className="p-inputgroup-addon bg-gray-200">
+                <i className="fa-regular fa-envelope"></i>
+              </span>
+              <InputText
+                id="email"
+                name="email"
+                placeholder="Enter email"
+                className={
+                  error.email
+                    ? "bg-gray-50 border border-red-300 text-md text-slate-600 rounded-e-lg block w-full p-3"
+                    : "bg-gray-50 border border-gray-300 text-md text-slate-600 rounded-e-lg block w-full p-3"
+                }
+                value={mother.email}
+                onChange={handleChange}
+                autoComplete="off"
+                required
+              />
+            </div>
+            {error.email && (
+              <small className="ms-1 text-red-600">{error.email}</small>
+            )}
+          </div>
+        </div>
+
+        <div className="grid lg:grid-cols-1 gap-4">
+          <div>
+            <label className="block mb-2 text-sm font-medium text-gray-900">
+              Home Address <span style={{ color: "red" }}>*</span>
+            </label>
+            <InputTextarea
+              id="company_address"
+              name="company_address"
+              placeholder="Enter Home Address"
+              className={
+                error.company_address
+                  ? "bg-gray-50 border border-red-300 text-md text-slate-600 rounded-lg block w-full p-3"
+                  : "bg-gray-50 border border-gray-300 text-md text-slate-600 rounded-lg block w-full p-3"
+              }
+              value={mother.company_address}
+              onChange={handleChangeTextArea}
+              autoComplete="off"
+              rows={5}
+              autoResize
+              required
+            />
+            {error.company_address && (
               <small className="ms-1 text-red-600">
-                {error.id_or_passport}
+                {error.company_address}
               </small>
             )}
           </div>
         </div>
+        {/* button */}
         <div className="flex justify-between">
           <button
             type="button"

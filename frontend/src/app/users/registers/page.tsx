@@ -9,8 +9,8 @@ import RegisFather from "@/components/Page/RegisFather";
 import RegisBrotherSister from "@/components/Page/RegisBrotherSister";
 
 export default function Register() {
-  const [idx, setIdx] = useState(2);
-  const [form, setForm] = useState("mother");
+  const [idx, setIdx] = useState(3);
+  const [form, setForm] = useState("b/s");
 
   let display: any;
 

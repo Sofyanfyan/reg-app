@@ -202,7 +202,7 @@ export default function RegisStudent({ ...props }) {
               htmlFor="name"
               className="block mb-2 text-sm font-medium text-gray-900"
             >
-              Fullname
+              Fullname <span style={{ color: "red" }}>*</span>
             </label>
 
             <InputText
@@ -228,7 +228,7 @@ export default function RegisStudent({ ...props }) {
               htmlFor="id_or_passport"
               className="block mb-2 text-sm font-medium text-gray-900"
             >
-              NIK/Passport
+              NIK/Passport <span style={{ color: "red" }}>*</span>{" "}
             </label>
             <InputText
               id="id_or_passport"
@@ -254,7 +254,7 @@ export default function RegisStudent({ ...props }) {
         <div className="grid lg:grid-cols-3 gap-4">
           <div>
             <label className="block mb-2 text-sm font-medium text-gray-900">
-              Gender
+              Gender <span style={{ color: "red" }}>*</span>{" "}
             </label>
 
             <Dropdown
@@ -285,7 +285,7 @@ export default function RegisStudent({ ...props }) {
           </div>
           <div>
             <label className="block mb-2 text-sm font-medium text-gray-900">
-              Religion
+              Religion <span style={{ color: "red" }}>*</span>{" "}
             </label>
             <Dropdown
               value={student.religion}
@@ -314,7 +314,7 @@ export default function RegisStudent({ ...props }) {
           </div>
           <div>
             <label className="block mb-2 text-sm font-medium text-gray-900">
-              Grade
+              Grade <span style={{ color: "red" }}>*</span>{" "}
             </label>
             <Dropdown
               value={student.grade_id}
@@ -349,7 +349,7 @@ export default function RegisStudent({ ...props }) {
               htmlFor="nationality"
               className="block mb-2 text-sm font-medium text-gray-900"
             >
-              Nationality
+              Nationality <span style={{ color: "red" }}>*</span>{" "}
             </label>
             <InputText
               id="nationality"
@@ -376,7 +376,7 @@ export default function RegisStudent({ ...props }) {
               htmlFor="place_birth"
               className="block mb-2 text-sm font-medium text-gray-900"
             >
-              Place of Birth
+              Place of Birth <span style={{ color: "red" }}>*</span>{" "}
             </label>
             <InputText
               id="place_birth"
@@ -403,7 +403,7 @@ export default function RegisStudent({ ...props }) {
               // htmlFor="date_birth"
               className="block mb-2 text-sm font-medium text-gray-900"
             >
-              Date of birth
+              Date of birth <span style={{ color: "red" }}>*</span>{" "}
             </label>
             <Calendar
               id="date_birth"
