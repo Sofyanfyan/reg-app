@@ -7,6 +7,7 @@ import { ChangeEvent, FormEvent, useState } from "react";
 
 export default function RegisBrotherSister({ ...props }) {
   const { setIdx, setForm } = props;
+  const [totBS, setTotBS] = useState(1);
   const [dateBirth, setDateBirth] = useState<Nullable<Date>>();
 
   const [user, setUser] = useState({
@@ -32,7 +33,7 @@ export default function RegisBrotherSister({ ...props }) {
     event.preventDefault();
     console.log("prev");
     setIdx(2);
-    setForm("user");
+    setForm("father");
   };
 
   return (
@@ -41,7 +42,8 @@ export default function RegisBrotherSister({ ...props }) {
         <h5 className="text-xl font-medium text-gray-900">
           Brother or sister form
         </h5>
-        <div className="grid lg:grid-cols-2 gap-4">
+
+        <div className="grid lg:grid-cols-3 gap-4">
           <div>
             <label className="block mb-2 text-sm font-medium text-gray-900">
               Fullname <span style={{ color: "red" }}>*</span>
@@ -74,8 +76,8 @@ export default function RegisBrotherSister({ ...props }) {
               ariaLabelledBy="date_birth"
               inputClassName={
                 error.date_birth
-                  ? "w-full bg-gray-50 border border-red-300 text-gray-900 text-md rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-3.5"
-                  : "w-full bg-gray-50 border border-gray-300 text-gray-900 text-md rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-3.5"
+                  ? "w-full bg-gray-50 border border-red-300 text-gray-900 text-md rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-3"
+                  : "w-full bg-gray-50 border border-gray-300 text-gray-900 text-md rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-3"
               }
               style={{ width: "100%" }}
               value={dateBirth}
@@ -91,7 +93,62 @@ export default function RegisBrotherSister({ ...props }) {
               <small className="ms-1 text-red-600">{error.date_birth}</small>
             )}
           </div>
+          <div>
+            <label className="block mb-2 text-sm font-medium text-gray-900">
+              Grade <span style={{ color: "red" }}>*</span>
+            </label>
+            <InputText
+              id="grade"
+              name="grade"
+              placeholder="Enter grade"
+              className={
+                error.name
+                  ? "bg-gray-50 border border-red-300 text-md text-slate-600 rounded-lg block w-full p-3"
+                  : "bg-gray-50 border border-gray-300 text-md text-slate-600 rounded-lg block w-full p-3"
+              }
+              value={user.grade}
+              onChange={handleChange}
+              autoComplete="off"
+              required
+            />
+            {error.grade && (
+              <small className="ms-1 text-red-600">{error.grade}</small>
+            )}
+          </div>
         </div>
+        <div className="flex items-center justify-center w-full">
+          <button
+            type="button"
+            className="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-red-200 via-red-300 to-yellow-200 group-hover:from-red-200 group-hover:via-red-300 group-hover:to-yellow-200 dark:text-white dark:hover:text-gray-900 focus:ring-4 focus:outline-none focus:ring-red-100"
+            onClick={() => {
+              if (totBS >= 2) {
+                setTotBS(totBS - 1);
+              }
+              console.log(totBS);
+            }}
+          >
+            <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white rounded-md group-hover:bg-opacity-0">
+              <i className="fa-solid fa-minus" style={{ color: "#5b5c5a" }}></i>{" "}
+              <i className="fa-solid fa-1" style={{ color: "#5b5c5a" }}></i>
+            </span>
+          </button>
+          <button
+            type="button"
+            className="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-red-200 via-red-300 to-yellow-200 group-hover:from-red-200 group-hover:via-red-300 group-hover:to-yellow-200 dark:text-white dark:hover:text-gray-900 focus:ring-4 focus:outline-none focus:ring-red-100"
+            onClick={() => {
+              if (totBS <= 4) {
+                setTotBS(totBS + 1);
+              }
+              console.log(totBS);
+            }}
+          >
+            <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white rounded-md group-hover:bg-opacity-0">
+              <i className="fa-solid fa-plus" style={{ color: "#5b5c5a" }}></i>{" "}
+              <i className="fa-solid fa-1" style={{ color: "#5b5c5a" }}></i>
+            </span>
+          </button>
+        </div>
+
         <div className="flex justify-between">
           <button
             type="button"
