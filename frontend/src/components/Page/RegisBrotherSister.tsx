@@ -8,20 +8,53 @@ import { ChangeEvent, FormEvent, useState } from "react";
 export default function RegisBrotherSister({ ...props }) {
   const { setIdx, setForm } = props;
   const [totBS, setTotBS] = useState(1);
-  const [dateBirth, setDateBirth] = useState<Nullable<Date>>();
+  const [dateBirth1, setDateBirth1] = useState<Nullable<Date>>();
+  const [dateBirth2, setDateBirth2] = useState<Nullable<Date>>();
+  const [dateBirth3, setDateBirth3] = useState<Nullable<Date>>();
+  const [dateBirth4, setDateBirth4] = useState<Nullable<Date>>();
+  const [dateBirth5, setDateBirth5] = useState<Nullable<Date>>();
 
   const [user, setUser] = useState({
-    name: "",
-    date_birth: "",
-    grade: "",
+    brotherOrSisterName1: "",
+    brotherOrSisterBirth_date1: "",
+    brotherOrSisterGrade1: "",
+    brotherOrSisterName2: "",
+    brotherOrSisterBirth_date2: "",
+    brotherOrSisterGrade2: "",
+    brotherOrSisterName3: "",
+    brotherOrSisterBirth_date3: "",
+    brotherOrSisterGrade3: "",
+    brotherOrSisterName4: "",
+    brotherOrSisterBirth_date4: "",
+    brotherOrSisterGrade4: "",
+    brotherOrSisterName5: "",
+    brotherOrSisterBirth_date5: "",
+    brotherOrSisterGrade5: "",
   });
   const [error, setError] = useState({
-    name: "",
-    date_birth: "",
-    grade: "",
+    brotherOrSisterName1: "",
+    brotherOrSisterBirth_date1: "",
+    brotherOrSisterGrade1: "",
+    brotherOrSisterName2: "",
+    brotherOrSisterBirth_date2: "",
+    brotherOrSisterGrade2: "",
+    brotherOrSisterName3: "",
+    brotherOrSisterBirth_date3: "",
+    brotherOrSisterGrade3: "",
+    brotherOrSisterName4: "",
+    brotherOrSisterBirth_date4: "",
+    brotherOrSisterGrade4: "",
+    brotherOrSisterName5: "",
+    brotherOrSisterBirth_date5: "",
+    brotherOrSisterGrade5: "",
   });
 
-  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {};
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+    event.preventDefault();
+    const { name, value } = event.target;
+    console.log(name, value);
+    setUser((prevState) => ({ ...prevState, [name]: value }));
+  };
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -60,75 +93,76 @@ export default function RegisBrotherSister({ ...props }) {
               <div className="grid lg:grid-cols-3 gap-4">
                 <div>
                   <label className="block mb-2 text-sm font-medium text-gray-900">
-                    Fullname <span style={{ color: "red" }}>*</span>
+                    Fullname
                   </label>
                   <InputText
-                    id="name"
-                    name="name"
+                    id="brotherOrSisterName1"
+                    name="brotherOrSisterName1"
                     placeholder="Enter Fullname"
                     className={
-                      error.name
+                      error.brotherOrSisterName1
                         ? "bg-gray-50 border border-red-300 text-md text-slate-600 rounded-lg block w-full p-3"
                         : "bg-gray-50 border border-gray-300 text-md text-slate-600 rounded-lg block w-full p-3"
                     }
-                    value={user.name}
+                    value={user.brotherOrSisterName1}
                     onChange={handleChange}
                     autoComplete="off"
-                    required
                   />
-                  {error.name && (
-                    <small className="ms-1 text-red-600">{error.name}</small>
-                  )}
-                </div>
-                <div>
-                  <label className="block mb-2 text-sm font-medium text-gray-900">
-                    Date of Birth <span style={{ color: "red" }}>*</span>
-                  </label>
-                  <Calendar
-                    id="date_birth"
-                    name="date_birth"
-                    ariaLabelledBy="date_birth"
-                    inputClassName={
-                      error.date_birth
-                        ? "w-full bg-gray-50 border border-red-300 text-gray-900 text-md rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-3"
-                        : "w-full bg-gray-50 border border-gray-300 text-gray-900 text-md rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-3"
-                    }
-                    style={{ width: "100%" }}
-                    value={dateBirth}
-                    onChange={(e) => setDateBirth(e.value)}
-                    placeholder="Date of birth"
-                    dateFormat="dd/mm/yy"
-                    locale="en"
-                    mask="99/99/9999"
-                    showButtonBar
-                    required
-                  />
-                  {error.date_birth && (
+                  {error.brotherOrSisterName1 && (
                     <small className="ms-1 text-red-600">
-                      {error.date_birth}
+                      {error.brotherOrSisterName1}
                     </small>
                   )}
                 </div>
                 <div>
                   <label className="block mb-2 text-sm font-medium text-gray-900">
-                    Grade <span style={{ color: "red" }}>*</span>
+                    Date of Birth
+                  </label>
+                  <Calendar
+                    id="brotherOrSisterBirth_date1"
+                    name="brotherOrSisterBirth_date1"
+                    ariaLabelledBy="brotherOrSisterBirth_date1"
+                    inputClassName={
+                      error.brotherOrSisterBirth_date1
+                        ? "w-full bg-gray-50 border border-red-300 text-gray-900 text-md rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-3"
+                        : "w-full bg-gray-50 border border-gray-300 text-gray-900 text-md rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-3"
+                    }
+                    style={{ width: "100%" }}
+                    value={dateBirth1}
+                    onChange={(e) => setDateBirth1(e.value)}
+                    placeholder="Date of birth"
+                    dateFormat="dd/mm/yy"
+                    locale="en"
+                    mask="99/99/9999"
+                    showButtonBar
+                  />
+                  {error.brotherOrSisterBirth_date1 && (
+                    <small className="ms-1 text-red-600">
+                      {error.brotherOrSisterBirth_date1}
+                    </small>
+                  )}
+                </div>
+                <div>
+                  <label className="block mb-2 text-sm font-medium text-gray-900">
+                    Grade
                   </label>
                   <InputText
-                    id="grade"
-                    name="grade"
+                    id="brotherOrSisterGrade1"
+                    name="brotherOrSisterGrade1"
                     placeholder="Enter grade"
                     className={
-                      error.name
+                      error.brotherOrSisterGrade1
                         ? "bg-gray-50 border border-red-300 text-md text-slate-600 rounded-lg block w-full p-3"
                         : "bg-gray-50 border border-gray-300 text-md text-slate-600 rounded-lg block w-full p-3"
                     }
-                    value={user.grade}
+                    value={user.brotherOrSisterGrade1}
                     onChange={handleChange}
                     autoComplete="off"
-                    required
                   />
-                  {error.grade && (
-                    <small className="ms-1 text-red-600">{error.grade}</small>
+                  {error.brotherOrSisterGrade1 && (
+                    <small className="ms-1 text-red-600">
+                      {error.brotherOrSisterGrade1}
+                    </small>
                   )}
                 </div>
               </div>
@@ -148,75 +182,76 @@ export default function RegisBrotherSister({ ...props }) {
               <div className="grid lg:grid-cols-3 gap-4">
                 <div>
                   <label className="block mb-2 text-sm font-medium text-gray-900">
-                    Fullname <span style={{ color: "red" }}>*</span>
+                    Fullname
                   </label>
                   <InputText
-                    id="name"
-                    name="name"
+                    id="brotherOrSisterName2"
+                    name="brotherOrSisterName2"
                     placeholder="Enter Fullname"
                     className={
-                      error.name
+                      error.brotherOrSisterName2
                         ? "bg-gray-50 border border-red-300 text-md text-slate-600 rounded-lg block w-full p-3"
                         : "bg-gray-50 border border-gray-300 text-md text-slate-600 rounded-lg block w-full p-3"
                     }
-                    value={user.name}
+                    value={user.brotherOrSisterName2}
                     onChange={handleChange}
                     autoComplete="off"
-                    required
                   />
-                  {error.name && (
-                    <small className="ms-1 text-red-600">{error.name}</small>
-                  )}
-                </div>
-                <div>
-                  <label className="block mb-2 text-sm font-medium text-gray-900">
-                    Date of Birth <span style={{ color: "red" }}>*</span>
-                  </label>
-                  <Calendar
-                    id="date_birth"
-                    name="date_birth"
-                    ariaLabelledBy="date_birth"
-                    inputClassName={
-                      error.date_birth
-                        ? "w-full bg-gray-50 border border-red-300 text-gray-900 text-md rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-3"
-                        : "w-full bg-gray-50 border border-gray-300 text-gray-900 text-md rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-3"
-                    }
-                    style={{ width: "100%" }}
-                    value={dateBirth}
-                    onChange={(e) => setDateBirth(e.value)}
-                    placeholder="Date of birth"
-                    dateFormat="dd/mm/yy"
-                    locale="en"
-                    mask="99/99/9999"
-                    showButtonBar
-                    required
-                  />
-                  {error.date_birth && (
+                  {error.brotherOrSisterName2 && (
                     <small className="ms-1 text-red-600">
-                      {error.date_birth}
+                      {error.brotherOrSisterName2}
                     </small>
                   )}
                 </div>
                 <div>
                   <label className="block mb-2 text-sm font-medium text-gray-900">
-                    Grade <span style={{ color: "red" }}>*</span>
+                    Date of Birth
+                  </label>
+                  <Calendar
+                    id="brotherOrSisterBirth_date2"
+                    name="brotherOrSisterBirth_date2"
+                    ariaLabelledBy="date_birth"
+                    inputClassName={
+                      error.brotherOrSisterBirth_date2
+                        ? "w-full bg-gray-50 border border-red-300 text-gray-900 text-md rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-3"
+                        : "w-full bg-gray-50 border border-gray-300 text-gray-900 text-md rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-3"
+                    }
+                    style={{ width: "100%" }}
+                    value={dateBirth2}
+                    onChange={(e) => setDateBirth2(e.value)}
+                    placeholder="Date of birth"
+                    dateFormat="dd/mm/yy"
+                    locale="en"
+                    mask="99/99/9999"
+                    showButtonBar
+                  />
+                  {error.brotherOrSisterBirth_date2 && (
+                    <small className="ms-1 text-red-600">
+                      {error.brotherOrSisterBirth_date2}
+                    </small>
+                  )}
+                </div>
+                <div>
+                  <label className="block mb-2 text-sm font-medium text-gray-900">
+                    Grade
                   </label>
                   <InputText
-                    id="grade"
-                    name="grade"
+                    id="brotherOrSisterGrade2"
+                    name="brotherOrSisterGrade2"
                     placeholder="Enter grade"
                     className={
-                      error.name
+                      error.brotherOrSisterGrade2
                         ? "bg-gray-50 border border-red-300 text-md text-slate-600 rounded-lg block w-full p-3"
                         : "bg-gray-50 border border-gray-300 text-md text-slate-600 rounded-lg block w-full p-3"
                     }
-                    value={user.grade}
+                    value={user.brotherOrSisterGrade2}
                     onChange={handleChange}
                     autoComplete="off"
-                    required
                   />
-                  {error.grade && (
-                    <small className="ms-1 text-red-600">{error.grade}</small>
+                  {error.brotherOrSisterGrade2 && (
+                    <small className="ms-1 text-red-600">
+                      {error.brotherOrSisterGrade2}
+                    </small>
                   )}
                 </div>
               </div>
@@ -236,75 +271,76 @@ export default function RegisBrotherSister({ ...props }) {
               <div className="grid lg:grid-cols-3 gap-4">
                 <div>
                   <label className="block mb-2 text-sm font-medium text-gray-900">
-                    Fullname <span style={{ color: "red" }}>*</span>
+                    Fullname
                   </label>
                   <InputText
-                    id="name"
-                    name="name"
+                    id="brotherOrSisterName3"
+                    name="brotherOrSisterName3"
                     placeholder="Enter Fullname"
                     className={
-                      error.name
+                      error.brotherOrSisterName3
                         ? "bg-gray-50 border border-red-300 text-md text-slate-600 rounded-lg block w-full p-3"
                         : "bg-gray-50 border border-gray-300 text-md text-slate-600 rounded-lg block w-full p-3"
                     }
-                    value={user.name}
+                    value={user.brotherOrSisterName3}
                     onChange={handleChange}
                     autoComplete="off"
-                    required
                   />
-                  {error.name && (
-                    <small className="ms-1 text-red-600">{error.name}</small>
-                  )}
-                </div>
-                <div>
-                  <label className="block mb-2 text-sm font-medium text-gray-900">
-                    Date of Birth <span style={{ color: "red" }}>*</span>
-                  </label>
-                  <Calendar
-                    id="date_birth"
-                    name="date_birth"
-                    ariaLabelledBy="date_birth"
-                    inputClassName={
-                      error.date_birth
-                        ? "w-full bg-gray-50 border border-red-300 text-gray-900 text-md rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-3"
-                        : "w-full bg-gray-50 border border-gray-300 text-gray-900 text-md rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-3"
-                    }
-                    style={{ width: "100%" }}
-                    value={dateBirth}
-                    onChange={(e) => setDateBirth(e.value)}
-                    placeholder="Date of birth"
-                    dateFormat="dd/mm/yy"
-                    locale="en"
-                    mask="99/99/9999"
-                    showButtonBar
-                    required
-                  />
-                  {error.date_birth && (
+                  {error.brotherOrSisterName3 && (
                     <small className="ms-1 text-red-600">
-                      {error.date_birth}
+                      {error.brotherOrSisterName3}
                     </small>
                   )}
                 </div>
                 <div>
                   <label className="block mb-2 text-sm font-medium text-gray-900">
-                    Grade <span style={{ color: "red" }}>*</span>
+                    Date of Birth
+                  </label>
+                  <Calendar
+                    id="brotherOrSisterBirth_date3"
+                    name="brotherOrSisterBirth_date3"
+                    ariaLabelledBy="date_birth"
+                    inputClassName={
+                      error.brotherOrSisterBirth_date3
+                        ? "w-full bg-gray-50 border border-red-300 text-gray-900 text-md rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-3"
+                        : "w-full bg-gray-50 border border-gray-300 text-gray-900 text-md rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-3"
+                    }
+                    style={{ width: "100%" }}
+                    value={dateBirth3}
+                    onChange={(e) => setDateBirth3(e.value)}
+                    placeholder="Date of birth"
+                    dateFormat="dd/mm/yy"
+                    locale="en"
+                    mask="99/99/9999"
+                    showButtonBar
+                  />
+                  {error.brotherOrSisterBirth_date3 && (
+                    <small className="ms-1 text-red-600">
+                      {error.brotherOrSisterBirth_date3}
+                    </small>
+                  )}
+                </div>
+                <div>
+                  <label className="block mb-2 text-sm font-medium text-gray-900">
+                    Grade
                   </label>
                   <InputText
-                    id="grade"
-                    name="grade"
+                    id="brotherOrSisterGrade3"
+                    name="brotherOrSisterGrade3"
                     placeholder="Enter grade"
                     className={
-                      error.name
+                      error.brotherOrSisterGrade3
                         ? "bg-gray-50 border border-red-300 text-md text-slate-600 rounded-lg block w-full p-3"
                         : "bg-gray-50 border border-gray-300 text-md text-slate-600 rounded-lg block w-full p-3"
                     }
-                    value={user.grade}
+                    value={user.brotherOrSisterGrade3}
                     onChange={handleChange}
                     autoComplete="off"
-                    required
                   />
-                  {error.grade && (
-                    <small className="ms-1 text-red-600">{error.grade}</small>
+                  {error.brotherOrSisterGrade3 && (
+                    <small className="ms-1 text-red-600">
+                      {error.brotherOrSisterGrade3}
+                    </small>
                   )}
                 </div>
               </div>
@@ -324,75 +360,76 @@ export default function RegisBrotherSister({ ...props }) {
               <div className="grid lg:grid-cols-3 gap-4">
                 <div>
                   <label className="block mb-2 text-sm font-medium text-gray-900">
-                    Fullname <span style={{ color: "red" }}>*</span>
+                    Fullname
                   </label>
                   <InputText
-                    id="name"
-                    name="name"
+                    id="brotherOrSisterName4"
+                    name="brotherOrSisterName4"
                     placeholder="Enter Fullname"
                     className={
-                      error.name
+                      error.brotherOrSisterName4
                         ? "bg-gray-50 border border-red-300 text-md text-slate-600 rounded-lg block w-full p-3"
                         : "bg-gray-50 border border-gray-300 text-md text-slate-600 rounded-lg block w-full p-3"
                     }
-                    value={user.name}
+                    value={user.brotherOrSisterName4}
                     onChange={handleChange}
                     autoComplete="off"
-                    required
                   />
-                  {error.name && (
-                    <small className="ms-1 text-red-600">{error.name}</small>
-                  )}
-                </div>
-                <div>
-                  <label className="block mb-2 text-sm font-medium text-gray-900">
-                    Date of Birth <span style={{ color: "red" }}>*</span>
-                  </label>
-                  <Calendar
-                    id="date_birth"
-                    name="date_birth"
-                    ariaLabelledBy="date_birth"
-                    inputClassName={
-                      error.date_birth
-                        ? "w-full bg-gray-50 border border-red-300 text-gray-900 text-md rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-3"
-                        : "w-full bg-gray-50 border border-gray-300 text-gray-900 text-md rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-3"
-                    }
-                    style={{ width: "100%" }}
-                    value={dateBirth}
-                    onChange={(e) => setDateBirth(e.value)}
-                    placeholder="Date of birth"
-                    dateFormat="dd/mm/yy"
-                    locale="en"
-                    mask="99/99/9999"
-                    showButtonBar
-                    required
-                  />
-                  {error.date_birth && (
+                  {error.brotherOrSisterName4 && (
                     <small className="ms-1 text-red-600">
-                      {error.date_birth}
+                      {error.brotherOrSisterName4}
                     </small>
                   )}
                 </div>
                 <div>
                   <label className="block mb-2 text-sm font-medium text-gray-900">
-                    Grade <span style={{ color: "red" }}>*</span>
+                    Date of Birth
+                  </label>
+                  <Calendar
+                    id="brotherOrSisterBirth_date4"
+                    name="brotherOrSisterBirth_date4"
+                    ariaLabelledBy="date_birth"
+                    inputClassName={
+                      error.brotherOrSisterBirth_date4
+                        ? "w-full bg-gray-50 border border-red-300 text-gray-900 text-md rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-3"
+                        : "w-full bg-gray-50 border border-gray-300 text-gray-900 text-md rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-3"
+                    }
+                    style={{ width: "100%" }}
+                    value={dateBirth4}
+                    onChange={(e) => setDateBirth4(e.value)}
+                    placeholder="Date of birth"
+                    dateFormat="dd/mm/yy"
+                    locale="en"
+                    mask="99/99/9999"
+                    showButtonBar
+                  />
+                  {error.brotherOrSisterBirth_date4 && (
+                    <small className="ms-1 text-red-600">
+                      {error.brotherOrSisterBirth_date4}
+                    </small>
+                  )}
+                </div>
+                <div>
+                  <label className="block mb-2 text-sm font-medium text-gray-900">
+                    Grade
                   </label>
                   <InputText
-                    id="grade"
-                    name="grade"
+                    id="brotherOrSisterGrade4"
+                    name="brotherOrSisterGrade4"
                     placeholder="Enter grade"
                     className={
-                      error.name
+                      error.brotherOrSisterGrade4
                         ? "bg-gray-50 border border-red-300 text-md text-slate-600 rounded-lg block w-full p-3"
                         : "bg-gray-50 border border-gray-300 text-md text-slate-600 rounded-lg block w-full p-3"
                     }
-                    value={user.grade}
+                    value={user.brotherOrSisterGrade4}
                     onChange={handleChange}
                     autoComplete="off"
-                    required
                   />
-                  {error.grade && (
-                    <small className="ms-1 text-red-600">{error.grade}</small>
+                  {error.brotherOrSisterGrade4 && (
+                    <small className="ms-1 text-red-600">
+                      {error.brotherOrSisterGrade4}
+                    </small>
                   )}
                 </div>
               </div>
@@ -410,75 +447,76 @@ export default function RegisBrotherSister({ ...props }) {
               <div className="grid lg:grid-cols-3 gap-4">
                 <div>
                   <label className="block mb-2 text-sm font-medium text-gray-900">
-                    Fullname <span style={{ color: "red" }}>*</span>
+                    Fullname
                   </label>
                   <InputText
-                    id="name"
-                    name="name"
+                    id="brotherOrSisterName5"
+                    name="brotherOrSisterName5"
                     placeholder="Enter Fullname"
                     className={
-                      error.name
+                      error.brotherOrSisterName5
                         ? "bg-gray-50 border border-red-300 text-md text-slate-600 rounded-lg block w-full p-3"
                         : "bg-gray-50 border border-gray-300 text-md text-slate-600 rounded-lg block w-full p-3"
                     }
-                    value={user.name}
+                    value={user.brotherOrSisterName5}
                     onChange={handleChange}
                     autoComplete="off"
-                    required
                   />
-                  {error.name && (
-                    <small className="ms-1 text-red-600">{error.name}</small>
-                  )}
-                </div>
-                <div>
-                  <label className="block mb-2 text-sm font-medium text-gray-900">
-                    Date of Birth <span style={{ color: "red" }}>*</span>
-                  </label>
-                  <Calendar
-                    id="date_birth"
-                    name="date_birth"
-                    ariaLabelledBy="date_birth"
-                    inputClassName={
-                      error.date_birth
-                        ? "w-full bg-gray-50 border border-red-300 text-gray-900 text-md rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-3"
-                        : "w-full bg-gray-50 border border-gray-300 text-gray-900 text-md rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-3"
-                    }
-                    style={{ width: "100%" }}
-                    value={dateBirth}
-                    onChange={(e) => setDateBirth(e.value)}
-                    placeholder="Date of birth"
-                    dateFormat="dd/mm/yy"
-                    locale="en"
-                    mask="99/99/9999"
-                    showButtonBar
-                    required
-                  />
-                  {error.date_birth && (
+                  {error.brotherOrSisterName5 && (
                     <small className="ms-1 text-red-600">
-                      {error.date_birth}
+                      {error.brotherOrSisterName5}
                     </small>
                   )}
                 </div>
                 <div>
                   <label className="block mb-2 text-sm font-medium text-gray-900">
-                    Grade <span style={{ color: "red" }}>*</span>
+                    Date of Birth
+                  </label>
+                  <Calendar
+                    id="brotherOrSisterBirth_date5"
+                    name="brotherOrSisterBirth_date5"
+                    ariaLabelledBy="date_birth"
+                    inputClassName={
+                      error.brotherOrSisterBirth_date5
+                        ? "w-full bg-gray-50 border border-red-300 text-gray-900 text-md rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-3"
+                        : "w-full bg-gray-50 border border-gray-300 text-gray-900 text-md rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-3"
+                    }
+                    style={{ width: "100%" }}
+                    value={dateBirth5}
+                    onChange={(e) => setDateBirth5(e.value)}
+                    placeholder="Date of birth"
+                    dateFormat="dd/mm/yy"
+                    locale="en"
+                    mask="99/99/9999"
+                    showButtonBar
+                  />
+                  {error.brotherOrSisterBirth_date5 && (
+                    <small className="ms-1 text-red-600">
+                      {error.brotherOrSisterBirth_date5}
+                    </small>
+                  )}
+                </div>
+                <div>
+                  <label className="block mb-2 text-sm font-medium text-gray-900">
+                    Grade
                   </label>
                   <InputText
-                    id="grade"
-                    name="grade"
+                    id="brotherOrSisterGrade5"
+                    name="brotherOrSisterGrade5"
                     placeholder="Enter grade"
                     className={
-                      error.name
+                      error.brotherOrSisterGrade5
                         ? "bg-gray-50 border border-red-300 text-md text-slate-600 rounded-lg block w-full p-3"
                         : "bg-gray-50 border border-gray-300 text-md text-slate-600 rounded-lg block w-full p-3"
                     }
-                    value={user.grade}
+                    value={user.brotherOrSisterGrade5}
                     onChange={handleChange}
                     autoComplete="off"
-                    required
                   />
-                  {error.grade && (
-                    <small className="ms-1 text-red-600">{error.grade}</small>
+                  {error.brotherOrSisterGrade5 && (
+                    <small className="ms-1 text-red-600">
+                      {error.brotherOrSisterGrade5}
+                    </small>
                   )}
                 </div>
               </div>
@@ -508,6 +546,7 @@ export default function RegisBrotherSister({ ...props }) {
 
           {totBS < 5 && (
             <button
+              data-tooltip-target="tooltip-default"
               type="button"
               className="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-red-200 via-red-300 to-yellow-200 group-hover:from-red-200 group-hover:via-red-300 group-hover:to-yellow-200 dark:text-white dark:hover:text-gray-900 focus:ring-4 focus:outline-none focus:ring-red-100"
               onClick={() => {
@@ -526,7 +565,6 @@ export default function RegisBrotherSister({ ...props }) {
             </button>
           )}
         </div>
-
         <div className="flex justify-between">
           <button
             type="button"
