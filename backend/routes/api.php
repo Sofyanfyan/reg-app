@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Authentication\UserController;
+use App\Http\Controllers\Register\RegisterController;
 use App\Http\Controllers\Users\StudentContoller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -28,5 +29,10 @@ Route::middleware(['auth.guard'])->prefix('users')->group(function () {
 Route::middleware(['email.verified'])->prefix('auth')->group(function () {
     // Route::post('dashboard', [UserController::class, 'test']);
     Route::get('dashboard', [StudentContoller::class, 'index']);
+    
+    Route::prefix('checks')->group(function () {
+        Route::post('students', [RegisterController::class, 'checkFieldStudent']);
+        Route::post('parents', [RegisterController::class, 'checkFieldParent']);
+    });
 });
 

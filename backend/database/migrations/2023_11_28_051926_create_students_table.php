@@ -21,14 +21,12 @@ return new class extends Migration
             $table->foreign('mother_id')->references('id')->on('mothers')->cascadeOnDelete()->cascadeOnUpdate();
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->cascadeOnDelete()->cascadeOnUpdate();
-            $table->boolean('is_active');
-            $table->string('unique_id')->unique();  
             $table->string('name');
+            $table->string('id_or_passport');
             $table->string('gender');
             $table->string('religion');
             $table->string('place_birth');
             $table->date('date_birth');
-            $table->string('id_or_passport');
             $table->string('nationality');
             $table->string('place_of_issue')->nullable();
             $table->date('date_exp')->nullable();

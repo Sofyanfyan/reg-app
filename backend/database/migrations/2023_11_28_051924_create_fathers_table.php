@@ -13,14 +13,16 @@ return new class extends Migration
     {
         Schema::create('fathers', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users')->cascadeOnDelete()->cascadeOnUpdate();
             $table->string('name');
             $table->string('place_birth');
             $table->string('religion');
             $table->date('date_birth');
             $table->string('occupation')->nullable();
             $table->string('company_name')->nullable();
-            $table->string('company_address')->nullable();
-            $table->string('home_address');
+            $table->text('company_address')->nullable();
+            $table->text('home_address');
             $table->string('telephone')->nullable();
             $table->string('mobilephone');
             $table->string('id_or_passport')->unique();
