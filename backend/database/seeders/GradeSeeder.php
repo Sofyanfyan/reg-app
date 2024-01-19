@@ -16,10 +16,12 @@ class GradeSeeder extends Seeder
         DB::table('grades')->insert([
             [
                'name' => 'Toddler',
+               'class' => NULL,
                'created_at' => now(),
             ],
             [
                'name' => 'Nursery',
+               'class' => NULL,
                'created_at' => now(),
             ],
             [
@@ -79,6 +81,7 @@ class GradeSeeder extends Seeder
             ],
             [
                'name' => 'IGCSE',
+               'class' => NULL,
                'created_at' => now(),
             ],
          ]);

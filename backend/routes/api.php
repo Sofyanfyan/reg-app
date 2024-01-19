@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Authentication\UserController;
+use App\Http\Controllers\GradeController;
 use App\Http\Controllers\Register\RegisterController;
 use App\Http\Controllers\Users\StudentContoller;
 use Illuminate\Http\Request;
@@ -33,6 +34,10 @@ Route::middleware(['email.verified'])->prefix('auth')->group(function () {
     Route::prefix('checks')->group(function () {
         Route::post('students', [RegisterController::class, 'checkFieldStudent']);
         Route::post('parents', [RegisterController::class, 'checkFieldParent']);
+    });
+
+    Route::prefix('grades')->group(function () {
+        Route::get('/', [GradeController::class, 'getAll']);
     });
 });
 
