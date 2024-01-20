@@ -5,6 +5,7 @@ import {
 } from "@reduxjs/toolkit";
 import { TypedUseSelectorHook, useSelector } from "react-redux";
 import authReducer from "./features/auth-slice";
+import registerReducer from "./features/register-slice";
 import thunk from "redux-thunk";
 
 const middleware = [...getDefaultMiddleware(), thunk];
@@ -12,6 +13,7 @@ const middleware = [...getDefaultMiddleware(), thunk];
 export const store = configureStore({
   reducer: {
     authReducer,
+    registerReducer,
   },
   middleware,
   devTools: process.env.NODE_ENV !== "production",

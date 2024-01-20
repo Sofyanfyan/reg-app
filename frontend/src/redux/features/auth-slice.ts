@@ -21,8 +21,9 @@ type payloadVerify = {
 };
 
 const initialState: any = {
-  code: 500,
-  data: {},
+  code: 102,
+  data: [],
+  msg: "loading",
 };
 
 export const auth = createSlice({

@@ -1,5 +1,5 @@
 "use client";
-import { FormEvent, useState, ChangeEvent } from "react";
+import { FormEvent, useState, ChangeEvent, useEffect } from "react";
 import { InputText } from "primereact/inputtext";
 import { Calendar } from "primereact/calendar";
 import { Nullable } from "primereact/ts-helpers";
@@ -10,6 +10,10 @@ import {
 } from "primereact/dropdown";
 import foramtedDate from "@/helpers/formatedDate";
 import reqStudent from "@/helpers/request/handleRegister";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchGrades } from "@/redux/features/register-slice";
+import { SyncLoader } from "react-spinners";
+import { log } from "console";
 
 export default function RegisStudent({ ...props }) {
   const { setIdx, setForm } = props;
@@ -50,13 +54,39 @@ export default function RegisStudent({ ...props }) {
     "Buddhism",
     "Confucianism",
   ];
-  const grade: string[] = [
-    "Nursery",
-    "Toddlers",
-    "Primary",
-    "Secondary",
-    "IGCSE",
-  ];
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        await dispatch(fetchGrades());
+      } catch (error) {
+        console.error("Error fetching grade:", error);
+        // Handle error (e.g., show an error message)
+      }
+    };
+
+    fetchData();
+  }, [dispatch]);
+
+  const grade = useSelector((state: any) => {
+    return state.registerReducer;
+  });
+
+  if (grade.error) {
+    console.log("error bos!");
+    return <h1>Errors!</h1>;
+  }
+
+  if (grade.loading) {
+    return (
+      <div className="w-full h-full my-[15%]">
+        <div className="flex justify-center">
+          <SyncLoader color="#c45200" loading size={15} />;
+        </div>
+      </div>
+    );
+  }
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -319,9 +349,10 @@ export default function RegisStudent({ ...props }) {
             <Dropdown
               value={student.grade_id}
               onChange={handleChangeSelect}
-              options={grade}
+              options={grade.data}
               // rules={{ required: "Grade is required." }}
               name="grade_id"
+              optionLabel="name"
               placeholder="Select a Grade"
               className={
                 error.grade_id
