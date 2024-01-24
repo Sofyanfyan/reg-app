@@ -5,8 +5,8 @@ import {
   PayloadAction,
 } from "@reduxjs/toolkit";
 import axios from "axios";
-import Swal from "sweetalert2";
-import { baseUrl } from "../baseUrl";
+import { baseUrl } from "../../baseUrl";
+import { error } from "console";
 
 export const fetchGrades: any = createAsyncThunk(
   "register/fetchGrades",

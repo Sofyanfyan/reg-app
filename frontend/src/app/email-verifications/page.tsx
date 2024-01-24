@@ -1,7 +1,7 @@
 "use client";
 import { FormEvent, useState, useEffect, ChangeEvent } from "react";
 import { useDispatch } from "react-redux";
-import { verify } from "@/redux/features/auth-slice";
+import { verify } from "@/redux/features/slices/auth-slice";
 import { AppDispatch } from "@/redux/store";
 import Swal from "sweetalert2";
 

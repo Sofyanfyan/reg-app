@@ -4,8 +4,9 @@ import {
   legacy_createStore as createStore,
 } from "@reduxjs/toolkit";
 import { TypedUseSelectorHook, useSelector } from "react-redux";
-import authReducer from "./features/auth-slice";
-import registerReducer from "./features/register-slice";
+import authReducer from "./features/slices/auth-slice";
+import gradeReducer from "./features/slices/grade-slice";
+import logoutReducer from "./features/slices/logout-slice";
 import thunk from "redux-thunk";
 
 const middleware = [...getDefaultMiddleware(), thunk];
@@ -13,7 +14,8 @@ const middleware = [...getDefaultMiddleware(), thunk];
 export const store = configureStore({
   reducer: {
     authReducer,
-    registerReducer,
+    gradeReducer,
+    logoutReducer,
   },
   middleware,
   devTools: process.env.NODE_ENV !== "production",

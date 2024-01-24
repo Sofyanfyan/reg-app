@@ -11,7 +11,7 @@ import {
 import formatedDate from "@/helpers/formatedDate";
 import reqStudent from "@/helpers/request/handleRegister";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchGrades } from "@/redux/features/register-slice";
+import { fetchGrades } from "@/redux/features/slices/grade-slice";
 import { SyncLoader } from "react-spinners";
 
 export default function RegisStudent({ ...props }) {
@@ -70,7 +70,7 @@ export default function RegisStudent({ ...props }) {
   }, [dispatch]);
 
   const grade = useSelector((state: any) => {
-    return state.registerReducer;
+    return state.gradeReducer;
   });
 
   if (grade.error) {
@@ -87,7 +87,6 @@ export default function RegisStudent({ ...props }) {
       </div>
     );
   }
-
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
 

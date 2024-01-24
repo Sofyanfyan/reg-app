@@ -255,4 +255,27 @@ class UserController extends Controller
             ], 500);
         }
     }
+
+
+    public function logOut(){
+        
+        try {
+            
+            auth()->guard('api')->logout();
+
+            return response()->json([
+                'code' => 200,
+                'msg' => "Logout success",
+            ], 200);
+
+        } catch (Exception $err) {
+            
+            return response()->json([
+                'code' => 500,
+                'msg' => "Internal server error",
+            ], 500);
+        }
+
+
+    }
 }

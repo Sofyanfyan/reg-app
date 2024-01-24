@@ -3,7 +3,7 @@ import { ChangeEvent, FormEvent, useState } from "react";
 import Loading from "../btn/Loading";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/redux/store";
-import { register } from "@/redux/features/auth-slice";
+import { register } from "@/redux/features/slices/auth-slice";
 import { useRouter } from "next/navigation";
 
 export default function Register() {

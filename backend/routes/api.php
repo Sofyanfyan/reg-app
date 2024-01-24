@@ -31,6 +31,8 @@ Route::middleware(['email.verified'])->prefix('auth')->group(function () {
     // Route::post('dashboard', [UserController::class, 'test']);
     Route::get('dashboard', [StudentContoller::class, 'index']);
     
+    Route::post('logout', [UserController::class, 'logout']);
+
     Route::prefix('checks')->group(function () {
         Route::post('students', [RegisterController::class, 'checkFieldStudent']);
         Route::post('parents', [RegisterController::class, 'checkFieldParent']);

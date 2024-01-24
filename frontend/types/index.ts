@@ -18,6 +18,11 @@ type IGrade = {
   updated_at: string | null;
 };
 
+type ILogout = {
+  code: number;
+  msg: string;
+};
+
 type RegisterState = {
   loading: boolean;
   error: string | null;

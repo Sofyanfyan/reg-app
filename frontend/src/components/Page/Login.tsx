@@ -1,7 +1,7 @@
 "use client";
 import { ChangeEvent, FormEvent, useState } from "react";
 import Loading from "../btn/Loading";
-import { logIn, logOut } from "@/redux/features/auth-slice";
+import { logIn, logOut } from "@/redux/features/slices/auth-slice";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/redux/store";
 import { useRouter } from "next/navigation";

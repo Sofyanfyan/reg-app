@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
 import Swal from "sweetalert2";
-import { baseUrl } from "../baseUrl";
+import { baseUrl } from "../../baseUrl";
 
 type payloadLogin = {
   email: string;
