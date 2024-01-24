@@ -1,5 +1,5 @@
 type IStudent = {
-  grade_id: string;
+  grade_id: any;
   name: string;
   gender: string;
   religion: string;

@@ -1,9 +1,4 @@
-import {
-  CaseReducerActions,
-  createAsyncThunk,
-  createSlice,
-  PayloadAction,
-} from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   loading: false,

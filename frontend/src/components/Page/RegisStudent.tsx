@@ -13,6 +13,11 @@ import reqStudent from "@/helpers/request/handleRegister";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchGrades } from "@/redux/features/slices/grade-slice";
 import { SyncLoader } from "react-spinners";
+import { actionValidationStudent } from "@/redux/features/actions/student-validation-action";
+import {
+  validationStart,
+  validationSuccess,
+} from "@/redux/features/slices/student-validation-slice";
 
 export default function RegisStudent({ ...props }) {
   const { setIdx, setForm } = props;
@@ -81,6 +86,15 @@ export default function RegisStudent({ ...props }) {
   const grade = useSelector((state: any) => {
     return state.gradeReducer;
   });
+  const validationLoading = useSelector((state: any) => {
+    return state.studentValidationReducer.loading;
+  });
+  const validationError = useSelector((state: any) => {
+    return state.studentValidationReducer.error;
+  });
+  // const grade = useSelector((state: any) => {
+  //   return state.gradeReducer;
+  // });
 
   if (grade.error) {
     return <h1>Errors!</h1>;
@@ -103,6 +117,12 @@ export default function RegisStudent({ ...props }) {
   };
 
   const handleChangeSelect = (event: DropdownChangeEvent) => {
+    const { name, value } = event.target;
+
+    setStudent((prevState) => ({ ...prevState, [name]: value }));
+  };
+
+  const handleChangeSelectGrade = (event: DropdownChangeEvent) => {
     const { name, value } = event.target;
 
     setStudent((prevState) => ({ ...prevState, [name]: value }));
@@ -203,11 +223,16 @@ export default function RegisStudent({ ...props }) {
       place_of_issue: "",
       date_exp: "",
     });
-    console.log("Next");
-    console.log(student);
+    // console.log("Next");
+    // console.log(student);
+    performValidation();
+  };
+
+  const performValidation = async () => {
+    dispatch(validationStart());
+    await dispatch(actionValidationStudent(student));
     setIdx(2);
     setForm("mother");
-    reqStudent(student);
   };
 
   return (
@@ -336,7 +361,7 @@ export default function RegisStudent({ ...props }) {
             </label>
             <Dropdown
               value={student.grade_id}
-              onChange={handleChangeSelect}
+              onChange={handleChangeSelectGrade}
               options={grade.data}
               // rules={{ required: "Grade is required." }}
               name="grade_id"

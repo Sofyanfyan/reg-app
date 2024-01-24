@@ -31,9 +31,9 @@ class RegisterController extends Controller
                 'grade_id' => $request->grade_id,
                 'nationality' => $request->nationality,
                 'place_birth' => $request->place_birth,
-                'date_birth' => $request->date_birth? $this->dateFormated($request->date_birth) : $request->date_birth,
+                'date_birth' => $request->date_birth,
                 'place_of_issue' => $request->place_of_issue,
-                'date_exp' => $request->date_exp? $this->dateFormated($request->date_exp) : $request->date_exp,
+                'date_exp' => $request->date_exp,
                 'user_id' => $user->id,
             ];
 
@@ -88,7 +88,7 @@ class RegisterController extends Controller
                 'name'=> $request->name,
                 'place_birth' => $request->place_birth,
                 'religion' => $request->religion,
-                'date_birth' => $request->date_birth? $this->dateFormated($request->date_birth) : $request->date_birth,
+                'date_birth' => $request->date_birth,
                 'occupation' => $request->occupation,
                 'company_name' => $request->company_name,
                 'company_address' => $request->company_name,
@@ -154,11 +154,11 @@ class RegisterController extends Controller
                 'gender' => $request->studentGender,
                 'religion' => $request->studentReligion,
                 'place_birth' => $request->studentPlace_birth,
-                'date_birth' => $request->studentDate_birth ? $this->changeDateFormat($request->studentDate_birth) : null,
+                'date_birth' => $request->studentDate_birth,
                 'id_or_passport' => $request->studentId_or_passport,
                 'nationality' => $request->studentNationality,
                 'place_of_issue' => $request->studentPlace_of_issue,
-                'date_exp' => $request->studentDate_exp ? $this->changeDateFormat($request->studentDate_exp) : null,
+                'date_exp' => $request->studentDate_exp,
                 'user_id' => $user->id,
             ];
 
@@ -167,7 +167,7 @@ class RegisterController extends Controller
                 'name'=> $request->fatherName,
                 'place_birth' => $request->fatherPlace_birth,
                 'religion' => $request->fatherReligion,
-                'date_birth' => $request->fatherBirth_date? $this->dateFormated($request->date_birth) : $request->date_birth,
+                'date_birth' => $request->fatherBirth_date,
                 'occupation' => $request->fatherOccupation,
                 'company_name' => $request->fatherCompany_name,
                 'company_address' => $request->fatherCompany_address,
@@ -185,7 +185,7 @@ class RegisterController extends Controller
                 'name'=> $request->motherName,
                 'place_birth' => $request->motherPlace_birth,
                 'religion' => $request->motherReligion,
-                'date_birth' => $request->motherBirth_date? $this->dateFormated($request->date_birth) : $request->date_birth,
+                'date_birth' => $request->motherBirth_date,
                 'occupation' => $request->motherOccupation,
                 'company_name' => $request->motherCompany_name,
                 'company_address' => $request->motherCompany_address,
@@ -245,19 +245,19 @@ class RegisterController extends Controller
             //brother and sister
 
             'brotherOrSisterName1' => $request->brotherOrSisterName1, 
-            'brotherOrSisterBirth_date1' => $request->brotherOrSisterBirth_date1? $this->dateFormated($request->brotherOrSisterBirth_date1) : null,
+            'brotherOrSisterBirth_date1' => $request->brotherOrSisterBirth_date1,
             'brotherOrSisterGrade1' => $request->brotherOrSisterGrade1,
             'brotherOrSisterName2' => $request->brotherOrSisterName2, 
-            'brotherOrSisterBirth_date2' => $request->brotherOrSisterBirth_date2? $this->dateFormated($request->brotherOrSisterBirth_date2) : null,
+            'brotherOrSisterBirth_date2' => $request->brotherOrSisterBirth_date2,
             'brotherOrSisterGrade2' => $request->brotherOrSisterGrade2,
             'brotherOrSisterName3' => $request->brotherOrSisterName3, 
-            'brotherOrSisterBirth_date3' => $request->brotherOrSisterBirth_date3? $this->dateFormated($request->brotherOrSisterBirth_date3) : null,
+            'brotherOrSisterBirth_date3' => $request->brotherOrSisterBirth_date3,
             'brotherOrSisterGrade3' => $request->brotherOrSisterGrade3,
             'brotherOrSisterName4' => $request->brotherOrSisterName4, 
-            'brotherOrSisterBirth_date4' => $request->brotherOrSisterBirth_date4? $this->dateFormated($request->brotherOrSisterBirth_date4) : null,
+            'brotherOrSisterBirth_date4' => $request->brotherOrSisterBirth_date4,
             'brotherOrSisterGrade4' => $request->brotherOrSisterGrade4,
             'brotherOrSisterName5' => $request->brotherOrSisterName5, 
-            'brotherOrSisterBirth_date5' => $request->brotherOrSisterBirth_date5? $this->dateFormated($request->brotherOrSisterBirth_date5) : null,
+            'brotherOrSisterBirth_date5' => $request->brotherOrSisterBirth_date5,
             'brotherOrSisterGrade5' => $request->brotherOrSisterGrade5,
             
         ];
@@ -361,23 +361,23 @@ class RegisterController extends Controller
 
          if($request->brotherOrSisterName1 && $request->brotherOrSisterBirth_date1 && $request->brotherOrSisterGrade1)
          {
-            array_push($credentialsBrotherOrSister, (array)['name' => $request->brotherOrSisterName1, 'date_birth' => $this->changeDateFormat($request->brotherOrSisterBirth_date1), 'grade' => $request->brotherOrSisterGrade1, 'student_id' => $student->id]);
+            array_push($credentialsBrotherOrSister, (array)['name' => $request->brotherOrSisterName1, 'date_birth' => $request->brotherOrSisterBirth_date1, 'grade' => $request->brotherOrSisterGrade1, 'student_id' => $student->id]);
          }
          if($request->brotherOrSisterName2 && $request->brotherOrSisterBirth_date2 && $request->brotherOrSisterGrade2)
          {
-            array_push($credentialsBrotherOrSister, (array)['name' => $request->brotherOrSisterName2, 'date_birth' => $this->changeDateFormat($request->brotherOrSisterBirth_date2), 'grade' => $request->brotherOrSisterGrade2, 'student_id' => $student->id]);
+            array_push($credentialsBrotherOrSister, (array)['name' => $request->brotherOrSisterName2, 'date_birth' => $request->brotherOrSisterBirth_date2, 'grade' => $request->brotherOrSisterGrade2, 'student_id' => $student->id]);
          }
          if($request->brotherOrSisterName3 && $request->brotherOrSisterBirth_date3 && $request->brotherOrSisterGrade3)
          {
-            array_push($credentialsBrotherOrSister, (array)['name' => $request->brotherOrSisterName3, 'date_birth' => $this->changeDateFormat($request->brotherOrSisterBirth_date3), 'grade' => $request->brotherOrSisterGrade3, 'student_id' => $student->id]);
+            array_push($credentialsBrotherOrSister, (array)['name' => $request->brotherOrSisterName3, 'date_birth' => $request->brotherOrSisterBirth_date3, 'grade' => $request->brotherOrSisterGrade3, 'student_id' => $student->id]);
          }
          if($request->brotherOrSisterName4 && $request->brotherOrSisterBirth_date4 && $request->brotherOrSisterGrade4)
          {
-            array_push($credentialsBrotherOrSister, (array)['name' => $request->brotherOrSisterName4, 'date_birth' => $this->changeDateFormat($request->brotherOrSisterBirth_date4), 'grade' => $request->brotherOrSisterGrade4, 'student_id' => $student->id]);
+            array_push($credentialsBrotherOrSister, (array)['name' => $request->brotherOrSisterName4, 'date_birth' => $request->brotherOrSisterBirth_date4, 'grade' => $request->brotherOrSisterGrade4, 'student_id' => $student->id]);
          }
          if($request->brotherOrSisterName5 && $request->brotherOrSisterBirth_date5 && $request->brotherOrSisterGrade5)
          {
-            array_push($credentialsBrotherOrSister, (array)['name' => $request->brotherOrSisterName5, 'date_birth' => $this->changeDateFormat($request->brotherOrSisterBirth_date5), 'grade' => $request->brotherOrSisterGrade5, 'student_id' => $student->id]);
+            array_push($credentialsBrotherOrSister, (array)['name' => $request->brotherOrSisterName5, 'date_birth' => $request->brotherOrSisterBirth_date5, 'grade' => $request->brotherOrSisterGrade5, 'student_id' => $student->id]);
          }
 
          BrotherSister::insert($credentialsBrotherOrSister);
@@ -389,9 +389,4 @@ class RegisterController extends Controller
       }
    }
 
-    private function dateFormated(string $date) : string {
-        
-        $explode = explode("/", $date);
-        return Carbon::create($explode[2], $explode[1], $explode[0])->format("Y-m-d");
-    }
 }
