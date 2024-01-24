@@ -8,12 +8,11 @@ import {
   DropdownChangeEvent,
   DropdownPassThroughMethodOptions,
 } from "primereact/dropdown";
-import foramtedDate from "@/helpers/formatedDate";
+import formatedDate from "@/helpers/formatedDate";
 import reqStudent from "@/helpers/request/handleRegister";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchGrades } from "@/redux/features/register-slice";
 import { SyncLoader } from "react-spinners";
-import { log } from "console";
 
 export default function RegisStudent({ ...props }) {
   const { setIdx, setForm } = props;
@@ -21,14 +20,15 @@ export default function RegisStudent({ ...props }) {
   const [dateExp, setDateExp] = useState<Nullable<Date>>(null);
   const [student, setStudent] = useState({
     grade_id: "",
-    is_active: true,
     name: "",
     gender: "",
     religion: "",
     place_birth: "",
+    date_birth: "",
     id_or_passport: "",
     nationality: "",
     place_of_issue: "",
+    date_exp: "",
   });
 
   const [error, setError] = useState({
@@ -101,28 +101,20 @@ export default function RegisStudent({ ...props }) {
     setStudent((prevState) => ({ ...prevState, [name]: value }));
   };
 
+  const setDate = (date: Nullable<Date>, name: string) => {
+    if (date) {
+      setStudent((prevState: any) => ({
+        ...prevState,
+        name: formatedDate(date),
+      }));
+    }
+  };
+
   const onSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    if (dateBirth) {
-      const value = foramtedDate(dateBirth);
-      if (value) {
-        setStudent((prevState) => ({
-          ...prevState,
-          date_birth: value,
-        }));
-      }
-    }
-
-    if (dateExp) {
-      const value = foramtedDate(dateExp);
-      if (value) {
-        setStudent((prevState) => ({
-          ...prevState,
-          date_exp: value,
-        }));
-      }
-    }
+    setDate(dateBirth, "date_birth");
+    setDate(dateExp, "date_exp");
 
     const {
       grade_id,
@@ -217,6 +209,7 @@ export default function RegisStudent({ ...props }) {
       date_exp: "",
     });
     console.log("Next");
+    console.log(student);
     setIdx(2);
     setForm("mother");
     reqStudent(student);

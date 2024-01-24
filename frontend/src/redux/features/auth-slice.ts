@@ -1,8 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
 import Swal from "sweetalert2";
-
-const baseUrl: string = "http://127.0.0.1:8000/api";
+import { baseUrl } from "../baseUrl";
 
 type payloadLogin = {
   email: string;

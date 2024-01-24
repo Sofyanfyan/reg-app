@@ -6,21 +6,7 @@ import {
 } from "@reduxjs/toolkit";
 import axios from "axios";
 import Swal from "sweetalert2";
-
-const baseUrl: string = "http://127.0.0.1:8000/api/auth";
-
-type IGrade = {
-  id: number;
-  name: string;
-  class: string | null;
-  created_at: string;
-  updated_at: string | null;
-};
-
-type IError = {
-  code: number;
-  msg: any;
-};
+import { baseUrl } from "../baseUrl";
 
 export const fetchGrades: any = createAsyncThunk(
   "register/fetchGrades",
@@ -28,7 +14,7 @@ export const fetchGrades: any = createAsyncThunk(
     try {
       const response = await axios({
         method: "GET",
-        url: baseUrl + "/grades",
+        url: baseUrl + "/auth/grades",
         headers: {
           Authorization: `Bearer ${localStorage.getItem("access_token")}`,
         },
@@ -44,7 +30,7 @@ export const fetchGrades: any = createAsyncThunk(
   }
 );
 
-export const grade: any = createSlice({
+export const grade = createSlice({
   name: "register",
   initialState: {
     data: [],

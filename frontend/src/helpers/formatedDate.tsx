@@ -2,7 +2,7 @@
 
 type Nullable<T> = T | null;
 
-export default function foramtedDate(dateString: Date | null): string | null {
+export default function formatedDate(dateString: any): string | null {
   if (dateString === null) {
     return null;
   }
