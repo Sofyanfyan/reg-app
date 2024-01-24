@@ -6,7 +6,6 @@ import {
 } from "@reduxjs/toolkit";
 import axios from "axios";
 import { baseUrl } from "../../baseUrl";
-import { error } from "console";
 
 export const fetchGrades: any = createAsyncThunk(
   "register/fetchGrades",

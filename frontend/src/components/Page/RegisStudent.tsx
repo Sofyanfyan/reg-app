@@ -57,6 +57,15 @@ export default function RegisStudent({ ...props }) {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    let localStudent = localStorage.getItem("reqStudent");
+
+    if (localStudent) {
+      setStudent(JSON.parse(localStudent));
+
+      setDateBirth(new Date(JSON.parse(localStudent).date_birth));
+      setDateExp(new Date(JSON.parse(localStudent).date_exp));
+    }
+
     const fetchData = async () => {
       try {
         await dispatch(fetchGrades());
@@ -74,7 +83,6 @@ export default function RegisStudent({ ...props }) {
   });
 
   if (grade.error) {
-    console.log("error bos!");
     return <h1>Errors!</h1>;
   }
 
@@ -100,20 +108,8 @@ export default function RegisStudent({ ...props }) {
     setStudent((prevState) => ({ ...prevState, [name]: value }));
   };
 
-  const setDate = (date: Nullable<Date>, name: string) => {
-    if (date) {
-      setStudent((prevState: any) => ({
-        ...prevState,
-        name: formatedDate(date),
-      }));
-    }
-  };
-
   const onSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-
-    setDate(dateBirth, "date_birth");
-    setDate(dateExp, "date_exp");
 
     const {
       grade_id,
@@ -439,7 +435,15 @@ export default function RegisStudent({ ...props }) {
               }
               style={{ width: "100%" }}
               value={dateBirth}
-              onChange={(e) => setDateBirth(e.value)}
+              onChange={(e) => {
+                const { value } = e;
+
+                setDateBirth(value);
+                setStudent((prevState) => ({
+                  ...prevState,
+                  date_birth: value ? formatedDate(value) : "",
+                }));
+              }}
               placeholder="Date of birth"
               dateFormat="dd/mm/yy"
               locale="en"
@@ -484,7 +488,15 @@ export default function RegisStudent({ ...props }) {
               inputClassName="w-full bg-gray-50 border border-gray-300 text-slate-600 text-md rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-3.5"
               style={{ width: "100%" }}
               value={dateExp}
-              onChange={(e) => setDateExp(e.value)}
+              onChange={(e) => {
+                const { value } = e;
+
+                setDateExp(value);
+                setStudent((prevState) => ({
+                  ...prevState,
+                  date_exp: value ? formatedDate(value) : "",
+                }));
+              }}
               placeholder="Date of expiry"
               dateFormat="dd/mm/yy"
               locale="en"

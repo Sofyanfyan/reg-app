@@ -1,3 +1,5 @@
+import formatedDate from "../formatedDate";
+
 export default function reqStudent(student: IStudent): Boolean {
   // lakukan axios terlebih dahulu sebelum dimasukkan local storage
 

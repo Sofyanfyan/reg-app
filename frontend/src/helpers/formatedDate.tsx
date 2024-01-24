@@ -2,11 +2,7 @@
 
 type Nullable<T> = T | null;
 
-export default function formatedDate(dateString: any): string | null {
-  if (dateString === null) {
-    return null;
-  }
-
+export default function formatedDate(dateString: any): string {
   // Get day, month, and year components
   let day: string = dateString.getDate().toString();
   let month: string = (dateString.getMonth() + 1).toString(); // Note: Month is zero-based, so we add 1
