@@ -15,7 +15,7 @@ import {
   DropdownPassThroughMethodOptions,
 } from "primereact/dropdown";
 import { InputTextarea } from "primereact/inputtextarea";
-import { log } from "console";
+import formatedDate from "@/helpers/formatedDate";
 
 export default function RegisMother({ ...props }) {
   const { setIdx, setForm } = props;
@@ -31,6 +31,7 @@ export default function RegisMother({ ...props }) {
   ];
 
   const [mother, setMother] = useState({
+    relation: "mother",
     name: "",
     place_birth: "",
     religion: "",
@@ -87,6 +88,7 @@ export default function RegisMother({ ...props }) {
   };
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    console.log(mother);
     event.preventDefault();
     console.log("Next");
     setIdx(2);
@@ -212,7 +214,15 @@ export default function RegisMother({ ...props }) {
               }
               style={{ width: "100%" }}
               value={dateBirth}
-              onChange={(e) => setDateBirth(e.value)}
+              onChange={(e) => {
+                const { value } = e;
+
+                setDateBirth(value);
+                setMother((prevState) => ({
+                  ...prevState,
+                  date_birth: value ? formatedDate(value) : "",
+                }));
+              }}
               placeholder="Date of birth"
               dateFormat="dd/mm/yy"
               locale="en"

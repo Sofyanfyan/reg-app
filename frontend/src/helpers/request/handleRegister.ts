@@ -1,8 +1,9 @@
-import formatedDate from "../formatedDate";
-
-export default function reqStudent(student: IStudent): Boolean {
+export function reqStudent(student: IStudent): void {
   // lakukan axios terlebih dahulu sebelum dimasukkan local storage
 
   localStorage.setItem("reqStudent", JSON.stringify(student));
-  return true;
+}
+
+export function reqParent(parent: IParent, side: string): void {
+  localStorage.setItem("req" + side.toUpperCase(), JSON.stringify(parent));
 }

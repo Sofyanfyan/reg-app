@@ -5,7 +5,7 @@ import {
   validationFailure,
   validationSuccess,
 } from "../slices/student-validation-slice";
-import reqStudent from "@/helpers/request/handleRegister";
+import { reqStudent } from "@/helpers/request/handleRegister";
 
 export const actionValidationStudent: any =
   (student: IStudent) => async (dispatch: Dispatch<any>) => {

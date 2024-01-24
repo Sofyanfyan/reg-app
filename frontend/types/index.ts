@@ -10,6 +10,24 @@ type IStudent = {
   date_birth?: string;
   date_exp?: string;
 };
+
+type IParent = {
+  name: number;
+  place_birth: string;
+  religion: string;
+  date_birth: string;
+  occupation: string;
+  company_name: string;
+  company_address: string;
+  home_address: string;
+  telephone: string;
+  mobilephone: string;
+  id_or_passport: string;
+  nationality: string;
+  phone: string;
+  email: string;
+};
+
 type IGrade = {
   id: number;
   name: string;

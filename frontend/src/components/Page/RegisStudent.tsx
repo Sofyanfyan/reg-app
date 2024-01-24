@@ -9,7 +9,7 @@ import {
   DropdownPassThroughMethodOptions,
 } from "primereact/dropdown";
 import formatedDate from "@/helpers/formatedDate";
-import reqStudent from "@/helpers/request/handleRegister";
+import { reqStudent } from "@/helpers/request/handleRegister";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchGrades } from "@/redux/features/slices/grade-slice";
 import { SyncLoader } from "react-spinners";
@@ -86,9 +86,11 @@ export default function RegisStudent({ ...props }) {
   const grade = useSelector((state: any) => {
     return state.gradeReducer;
   });
+
   const validationLoading = useSelector((state: any) => {
     return state.studentValidationReducer.loading;
   });
+
   const validationError = useSelector((state: any) => {
     return state.studentValidationReducer.error;
   });
@@ -230,7 +232,9 @@ export default function RegisStudent({ ...props }) {
 
   const performValidation = async () => {
     dispatch(validationStart());
+
     await dispatch(actionValidationStudent(student));
+
     setIdx(2);
     setForm("mother");
   };
