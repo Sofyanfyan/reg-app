@@ -6,16 +6,17 @@ const initialState = {
 };
 
 const studentValidationSlice = createSlice({
-  name: "check-validation",
+  name: "student/validation",
   initialState,
   reducers: {
     validationStart: (state) => {
       state.loading = true;
     },
     validationSuccess: (state) => {
-      state.loading = true;
+      state.loading = false;
     },
     validationFailure: (state, action) => {
+      state.loading = false;
       state.error = action.payload;
     },
   },

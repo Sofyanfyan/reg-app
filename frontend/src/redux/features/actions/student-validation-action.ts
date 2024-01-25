@@ -1,14 +1,16 @@
 import axios from "axios";
 import { baseUrl } from "../../baseUrl";
-import { Dispatch } from "@reduxjs/toolkit";
+import { Dispatch, ThunkAction } from "@reduxjs/toolkit";
 import {
   validationFailure,
   validationSuccess,
 } from "../slices/student-validation-slice";
 import { reqStudent } from "@/helpers/request/handleRegister";
+import { RootState } from "@/redux/store";
 
 export const actionValidationStudent: any =
-  (student: IStudent) => async (dispatch: Dispatch<any>) => {
+  (student: IStudent): ThunkAction<void, RootState, null, any> =>
+  async (dispatch: Dispatch<any>) => {
     try {
       const { data } = await axios({
         data: {

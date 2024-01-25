@@ -18,11 +18,13 @@ import {
   validationStart,
   validationSuccess,
 } from "@/redux/features/slices/student-validation-slice";
+import Submit from "../btn/Submit";
 
 export default function RegisStudent({ ...props }) {
   const { setIdx, setForm } = props;
   const [dateBirth, setDateBirth] = useState<Nullable<Date>>(null);
   const [dateExp, setDateExp] = useState<Nullable<Date>>(null);
+  const [isSubmit, setSubmit] = useState<Boolean>(false);
   const [student, setStudent] = useState({
     grade_id: "",
     name: "",
@@ -151,6 +153,7 @@ export default function RegisStudent({ ...props }) {
       !place_birth ||
       !dateBirth ||
       !id_or_passport ||
+      id_or_passport.length < 6 ||
       !nationality
     ) {
       if (!name) {
@@ -197,7 +200,12 @@ export default function RegisStudent({ ...props }) {
           date_birth: "Date of birth is required",
         }));
       }
-      if (!id_or_passport) {
+      if (id_or_passport.length < 6) {
+        setError((prevState) => ({
+          ...prevState,
+          id_or_passport: "NIK / Passport min 6 character.",
+        }));
+      } else if (!id_or_passport) {
         setError((prevState) => ({
           ...prevState,
           id_or_passport: "NIK / Passport is required",
@@ -225,6 +233,7 @@ export default function RegisStudent({ ...props }) {
       place_of_issue: "",
       date_exp: "",
     });
+    setSubmit(true);
     // console.log("Next");
     // console.log(student);
     performValidation();
@@ -536,13 +545,17 @@ export default function RegisStudent({ ...props }) {
         </div>
 
         <div className="flex justify-end">
-          <button
-            type="submit"
-            className="max-w-lg text-white bg-[#e07c39] hover:bg-[#e25d04ee] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
-          >
-            Next
-            <i className="ms-2 fa-solid fa-angle-right"></i>
-          </button>
+          {isSubmit ? (
+            <Submit />
+          ) : (
+            <button
+              type="submit"
+              className="max-w-lg text-white bg-[#e07c39] hover:bg-[#e25d04ee] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+            >
+              Next
+              <i className="ms-2 fa-solid fa-angle-right"></i>
+            </button>
+          )}
         </div>
       </form>
     </div>

@@ -12,19 +12,19 @@ type IStudent = {
 };
 
 type IParent = {
-  name: number;
+  name: string;
   place_birth: string;
   religion: string;
   date_birth: string;
-  occupation: string;
-  company_name: string;
-  company_address: string;
+  occupation?: string;
+  company_name?: string;
+  company_address?: string;
   home_address: string;
-  telephone: string;
+  telephone?: string;
   mobilephone: string;
   id_or_passport: string;
   nationality: string;
-  phone: string;
+  phone?: string;
   email: string;
 };
 

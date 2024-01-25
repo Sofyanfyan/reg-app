@@ -4,6 +4,7 @@ import {
   ChangeEvent,
   FormEvent,
   TextareaHTMLAttributes,
+  useEffect,
   useState,
 } from "react";
 import { InputText } from "primereact/inputtext";
@@ -16,12 +17,17 @@ import {
 } from "primereact/dropdown";
 import { InputTextarea } from "primereact/inputtextarea";
 import formatedDate from "@/helpers/formatedDate";
+import { actionValidationParent } from "@/redux/features/actions/parent-validation-action";
+import { useDispatch, useSelector } from "react-redux";
+import { parentStart } from "@/redux/features/slices/parent-validation-slice";
+import Submit from "../btn/Submit";
 
 export default function RegisMother({ ...props }) {
   const { setIdx, setForm } = props;
-  const [dateBirth, setDateBirth] = useState<Nullable<Date>>();
+  const [dateBirth, setDateBirth] = useState<Nullable<Date>>(null);
+  const [isSubmit, setSubmit] = useState<Boolean>(false);
 
-  const religion: string[] = [
+  const religionOption: string[] = [
     "Islam",
     "Christianity",
     "Catholicism",
@@ -65,6 +71,21 @@ export default function RegisMother({ ...props }) {
     email: "",
   });
 
+  useEffect(() => {
+    let localMother = localStorage.getItem("reqMOTHER");
+
+    if (localMother) {
+      setMother(JSON.parse(localMother));
+
+      console.log(JSON.parse(localMother));
+
+      setDateBirth(new Date(JSON.parse(localMother).date_birth));
+    }
+  }, []);
+
+  const dispatch = useDispatch();
+
+  //input field =============================================
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
     const { value, name } = event.target;
@@ -72,6 +93,7 @@ export default function RegisMother({ ...props }) {
     setMother((prevState) => ({ ...prevState, [name]: value }));
   };
 
+  //options field ==========================================
   const handleChangeSelect = (event: DropdownChangeEvent) => {
     event.preventDefault();
     const { value, name } = event.target;
@@ -79,22 +101,178 @@ export default function RegisMother({ ...props }) {
     setMother((prevState) => ({ ...prevState, [name]: value }));
   };
 
+  //text area field ========================================
   const handleChangeTextArea = (event: ChangeEvent<HTMLTextAreaElement>) => {
     event.preventDefault();
 
-    // console.log(event.target.value);
     const { value, name } = event.target;
     setMother((prevState) => ({ ...prevState, [name]: value }));
   };
 
+  //handle submit ==============================================
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
-    console.log(mother);
     event.preventDefault();
-    console.log("Next");
-    setIdx(2);
-    setForm("father");
+    const {
+      name,
+      place_birth,
+      religion,
+      date_birth,
+      home_address,
+      mobilephone,
+      id_or_passport,
+      nationality,
+      phone,
+      email,
+    } = mother;
+
+    const emailRegex = /\S+@\S+\.\S+/;
+    const isValidEmail = emailRegex.test(email);
+
+    if (
+      !name ||
+      !place_birth ||
+      !religion ||
+      !date_birth ||
+      !home_address ||
+      !mobilephone ||
+      !id_or_passport ||
+      !nationality ||
+      !email ||
+      !isValidEmail ||
+      name.length < 5 ||
+      id_or_passport.length < 6
+    ) {
+      if (!name) {
+        setError((prevState) => ({
+          ...prevState,
+          name: "Fullname is required",
+        }));
+      } else if (name.length < 5) {
+        setError((prevState) => ({
+          ...prevState,
+          name: "Fullname min 5 character.",
+        }));
+      } else {
+        setError((prevState) => ({
+          ...prevState,
+          name: "",
+        }));
+      }
+
+      if (!place_birth) {
+        setError((prevState) => ({
+          ...prevState,
+          place_birth: "Place birth is required",
+        }));
+      } else {
+        setError((prevState) => ({
+          ...prevState,
+          place_birth: "",
+        }));
+      }
+
+      if (!religion) {
+        setError((prevState) => ({
+          ...prevState,
+          religion: "Religion is required",
+        }));
+      } else {
+        setError((prevState) => ({
+          ...prevState,
+          religion: "",
+        }));
+      }
+      if (!date_birth) {
+        setError((prevState) => ({
+          ...prevState,
+          date_birth: "Date birth is required",
+        }));
+      } else {
+        setError((prevState) => ({
+          ...prevState,
+          date_birth: "",
+        }));
+      }
+      if (!home_address) {
+        setError((prevState) => ({
+          ...prevState,
+          home_address: "Home address is required",
+        }));
+      } else {
+        setError((prevState) => ({
+          ...prevState,
+          home_address: "",
+        }));
+      }
+      if (!mobilephone) {
+        setError((prevState) => ({
+          ...prevState,
+          mobilephone: "Mobile phone is required",
+        }));
+      } else {
+        setError((prevState) => ({
+          ...prevState,
+          mobilephone: "",
+        }));
+      }
+      if (!id_or_passport) {
+        setError((prevState) => ({
+          ...prevState,
+          id_or_passport: "NIK/Passport is required",
+        }));
+      } else if (id_or_passport.length < 6) {
+        setError((prevState) => ({
+          ...prevState,
+          id_or_passport: "NIK/Passport min 5 character",
+        }));
+      } else {
+        setError((prevState) => ({
+          ...prevState,
+          id_or_passport: "",
+        }));
+      }
+      if (!nationality) {
+        setError((prevState) => ({
+          ...prevState,
+          nationality: "Nationality is required",
+        }));
+      } else {
+        setError((prevState) => ({
+          ...prevState,
+          nationality: "",
+        }));
+      }
+      if (!email) {
+        setError((prevState) => ({
+          ...prevState,
+          email: "Email is required",
+        }));
+      } else if (!isValidEmail) {
+        setError((prevState) => ({
+          ...prevState,
+          email: "Please enter a valid email address",
+        }));
+      } else {
+        setError((prevState) => ({
+          ...prevState,
+          email: "",
+        }));
+      }
+      return;
+    }
+
+    setSubmit(true);
+    performValidation();
   };
 
+  const performValidation = async () => {
+    dispatch(parentStart());
+    await dispatch(actionValidationParent(mother, "mother", setIdx, setForm));
+    // setIdx(2);
+    // setForm("father");
+  };
+
+  // handle previous ==========================================
   const handlePrev = (event: FormEvent<HTMLButtonElement>) => {
     event.preventDefault();
     console.log("prev");
@@ -241,7 +419,7 @@ export default function RegisMother({ ...props }) {
             <Dropdown
               value={mother.religion}
               onChange={handleChangeSelect}
-              options={religion}
+              options={religionOption}
               name="religion"
               placeholder="Select a Religion"
               className={
@@ -283,7 +461,6 @@ export default function RegisMother({ ...props }) {
               value={mother.company_name}
               onChange={handleChange}
               autoComplete="off"
-              required
             />
             {error.company_name && (
               <small className="ms-1 text-red-600">{error.company_name}</small>
@@ -305,7 +482,6 @@ export default function RegisMother({ ...props }) {
               value={mother.phone}
               onChange={handleChange}
               autoComplete="off"
-              required
             />
             {error.phone && (
               <small className="ms-1 text-red-600">{error.phone}</small>
@@ -318,23 +494,24 @@ export default function RegisMother({ ...props }) {
               Company Address
             </label>
             <InputTextarea
-              id="home_address"
-              name="home_address"
+              id="company_address"
+              name="company_address"
               placeholder="Enter Company Address"
               className={
-                error.home_address
+                error.company_address
                   ? "bg-gray-50 border border-red-300 text-md text-slate-600 rounded-lg block w-full p-3"
                   : "bg-gray-50 border border-gray-300 text-md text-slate-600 rounded-lg block w-full p-3"
               }
-              value={mother.home_address}
+              value={mother.company_address}
               onChange={handleChangeTextArea}
               autoComplete="off"
               rows={5}
               autoResize
-              required
             />
-            {error.home_address && (
-              <small className="ms-1 text-red-600">{error.home_address}</small>
+            {error.company_address && (
+              <small className="ms-1 text-red-600">
+                {error.company_address}
+              </small>
             )}
           </div>
         </div>
@@ -359,7 +536,6 @@ export default function RegisMother({ ...props }) {
               value={mother.telephone}
               onChange={handleChange}
               autoComplete="off"
-              required
             />
             {error.telephone && (
               <small className="ms-1 text-red-600">{error.telephone}</small>
@@ -422,25 +598,23 @@ export default function RegisMother({ ...props }) {
               Home Address <span style={{ color: "red" }}>*</span>
             </label>
             <InputTextarea
-              id="company_address"
-              name="company_address"
+              id="home_address"
+              name="home_address"
               placeholder="Enter Home Address"
               className={
-                error.company_address
+                error.home_address
                   ? "bg-gray-50 border border-red-300 text-md text-slate-600 rounded-lg block w-full p-3"
                   : "bg-gray-50 border border-gray-300 text-md text-slate-600 rounded-lg block w-full p-3"
               }
-              value={mother.company_address}
+              value={mother.home_address}
               onChange={handleChangeTextArea}
               autoComplete="off"
               rows={5}
               autoResize
               required
             />
-            {error.company_address && (
-              <small className="ms-1 text-red-600">
-                {error.company_address}
-              </small>
+            {error.home_address && (
+              <small className="ms-1 text-red-600">{error.home_address}</small>
             )}
           </div>
         </div>
@@ -454,13 +628,18 @@ export default function RegisMother({ ...props }) {
             <i className="fa-solid fa-chevron-right fa-rotate-180 me-2"></i>
             Previous
           </button>
-          <button
-            type="submit"
-            className="max-w-lg text-white bg-[#e07c39] hover:bg-[#e25d04ee] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
-          >
-            Next
-            <i className="ms-2 fa-solid fa-angle-right"></i>
-          </button>
+
+          {isSubmit ? (
+            <Submit />
+          ) : (
+            <button
+              type="submit"
+              className="max-w-lg text-white bg-[#e07c39] hover:bg-[#e25d04ee] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+            >
+              Next
+              <i className="ms-2 fa-solid fa-angle-right"></i>
+            </button>
+          )}
         </div>
       </form>
     </div>
