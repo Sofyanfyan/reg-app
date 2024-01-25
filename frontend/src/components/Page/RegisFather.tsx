@@ -9,11 +9,19 @@ import {
 import { InputText } from "primereact/inputtext";
 import { InputTextarea } from "primereact/inputtextarea";
 import { Nullable } from "primereact/ts-helpers";
-import { ChangeEvent, FormEvent, useState } from "react";
+import { ChangeEvent, FormEvent, useEffect, useState } from "react";
+import Submit from "../btn/Submit";
+import PreviousMap from "postcss/lib/previous-map";
+import formatedDate from "@/helpers/formatedDate";
+import { log } from "console";
+import { actionValidationParent } from "@/redux/features/actions/parent-validation-action";
+import { useDispatch } from "react-redux";
+import { parentStart } from "@/redux/features/slices/parent-validation-slice";
 
 export default function RegisFather({ ...props }) {
   const { setIdx, setForm } = props;
-  const [dateBirth, setDateBirth] = useState<Nullable<Date>>();
+  const [dateBirth, setDateBirth] = useState<Nullable<Date>>(null);
+  const [isSubmit, setSubmit] = useState<Boolean>(false);
 
   const religion: string[] = [
     "Islam",
@@ -58,6 +66,21 @@ export default function RegisFather({ ...props }) {
     email: "",
   });
 
+  useEffect(() => {
+    const name = localStorage.getItem("name");
+    const email = localStorage.getItem("email");
+    const relation = localStorage.getItem("relation");
+
+    if (relation == "father" && name && email) {
+      setFather((prevState) => ({ ...prevState, name }));
+      setFather((prevState) => ({ ...prevState, email }));
+      setFather((prevState) => ({ ...prevState, relation }));
+    }
+  }, []);
+
+  const dispatch = useDispatch();
+
+  // options input ==========================================
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
     const { value, name } = event.target;
@@ -65,6 +88,7 @@ export default function RegisFather({ ...props }) {
     setFather((prevState) => ({ ...prevState, [name]: value }));
   };
 
+  // options field ==========================================
   const handleChangeSelect = (event: DropdownChangeEvent) => {
     event.preventDefault();
     const { value, name } = event.target;
@@ -72,21 +96,196 @@ export default function RegisFather({ ...props }) {
     setFather((prevState) => ({ ...prevState, [name]: value }));
   };
 
+  // textarea field ==========================================
   const handleChangeTextArea = (event: ChangeEvent<HTMLTextAreaElement>) => {
     event.preventDefault();
-
-    // console.log(event.target.value);
     const { value, name } = event.target;
     setFather((prevState) => ({ ...prevState, [name]: value }));
   };
 
+  // SUBMIT ==================================================
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log("Banteng");
-    setIdx(3);
-    setForm("b/s");
+
+    event.preventDefault();
+    const {
+      name,
+      place_birth,
+      religion,
+      date_birth,
+      home_address,
+      mobilephone,
+      id_or_passport,
+      nationality,
+      email,
+    } = father;
+
+    const emailRegex = /\S+@\S+\.\S+/;
+    const isValidEmail = emailRegex.test(email);
+    console.log("====================================");
+    console.log(father);
+    console.log("====================================");
+
+    if (
+      !name ||
+      !place_birth ||
+      !religion ||
+      !date_birth ||
+      !home_address ||
+      !mobilephone ||
+      !id_or_passport ||
+      !nationality ||
+      !email ||
+      !isValidEmail ||
+      name.length < 5 ||
+      id_or_passport.length < 6
+    ) {
+      if (!name) {
+        setError((prevState) => ({
+          ...prevState,
+          name: "Fullname is required",
+        }));
+      } else if (name.length < 5) {
+        setError((prevState) => ({
+          ...prevState,
+          name: "Fullname min 5 character.",
+        }));
+      } else {
+        setError((prevState) => ({
+          ...prevState,
+          name: "",
+        }));
+      }
+
+      if (!place_birth) {
+        setError((prevState) => ({
+          ...prevState,
+          place_birth: "Place birth is required",
+        }));
+      } else {
+        setError((prevState) => ({
+          ...prevState,
+          place_birth: "",
+        }));
+      }
+
+      if (!religion) {
+        setError((prevState) => ({
+          ...prevState,
+          religion: "Religion is required",
+        }));
+      } else {
+        setError((prevState) => ({
+          ...prevState,
+          religion: "",
+        }));
+      }
+      if (!date_birth) {
+        setError((prevState) => ({
+          ...prevState,
+          date_birth: "Date birth is required",
+        }));
+      } else {
+        setError((prevState) => ({
+          ...prevState,
+          date_birth: "",
+        }));
+      }
+      if (!home_address) {
+        setError((prevState) => ({
+          ...prevState,
+          home_address: "Home address is required",
+        }));
+      } else {
+        setError((prevState) => ({
+          ...prevState,
+          home_address: "",
+        }));
+      }
+      if (!mobilephone) {
+        setError((prevState) => ({
+          ...prevState,
+          mobilephone: "Mobile phone is required",
+        }));
+      } else {
+        setError((prevState) => ({
+          ...prevState,
+          mobilephone: "",
+        }));
+      }
+      if (!id_or_passport) {
+        setError((prevState) => ({
+          ...prevState,
+          id_or_passport: "NIK/Passport is required",
+        }));
+      } else if (id_or_passport.length < 6) {
+        setError((prevState) => ({
+          ...prevState,
+          id_or_passport: "NIK/Passport min 5 character",
+        }));
+      } else {
+        setError((prevState) => ({
+          ...prevState,
+          id_or_passport: "",
+        }));
+      }
+      if (!nationality) {
+        setError((prevState) => ({
+          ...prevState,
+          nationality: "Nationality is required",
+        }));
+      } else {
+        setError((prevState) => ({
+          ...prevState,
+          nationality: "",
+        }));
+      }
+      if (!email) {
+        setError((prevState) => ({
+          ...prevState,
+          email: "Email is required",
+        }));
+      } else if (!isValidEmail) {
+        setError((prevState) => ({
+          ...prevState,
+          email: "Please enter a valid email address",
+        }));
+      } else {
+        setError((prevState) => ({
+          ...prevState,
+          email: "",
+        }));
+      }
+      return;
+    }
+
+    setSubmit(true);
+    setError({
+      name: "",
+      place_birth: "",
+      religion: "",
+      date_birth: "",
+      occupation: "",
+      company_name: "",
+      company_address: "",
+      home_address: "",
+      telephone: "",
+      mobilephone: "",
+      id_or_passport: "",
+      nationality: "",
+      phone: "",
+      email: "",
+    });
+
+    performValidation();
   };
 
+  const performValidation = async () => {
+    dispatch(parentStart());
+    await dispatch(actionValidationParent(father, "father", setIdx, setForm));
+  };
+
+  // PREVIOUS ================================================
   const handlePrev = (event: FormEvent<HTMLButtonElement>) => {
     event.preventDefault();
     console.log("prev");
@@ -206,7 +405,15 @@ export default function RegisFather({ ...props }) {
               }
               style={{ width: "100%" }}
               value={dateBirth}
-              onChange={(e) => setDateBirth(e.value)}
+              onChange={(e) => {
+                const { value } = e;
+
+                setDateBirth(value);
+                setFather((prevState) => ({
+                  ...prevState,
+                  date_birth: value ? formatedDate(value) : "",
+                }));
+              }}
               placeholder="Date of birth"
               dateFormat="dd/mm/yy"
               locale="en"
@@ -267,7 +474,6 @@ export default function RegisFather({ ...props }) {
               value={father.company_name}
               onChange={handleChange}
               autoComplete="off"
-              required
             />
             {error.company_name && (
               <small className="ms-1 text-red-600">{error.company_name}</small>
@@ -289,7 +495,6 @@ export default function RegisFather({ ...props }) {
               value={father.phone}
               onChange={handleChange}
               autoComplete="off"
-              required
             />
             {error.phone && (
               <small className="ms-1 text-red-600">{error.phone}</small>
@@ -302,23 +507,24 @@ export default function RegisFather({ ...props }) {
               Company Address
             </label>
             <InputTextarea
-              id="home_address"
-              name="home_address"
+              id="company_address"
+              name="company_address"
               placeholder="Enter Company Address"
               className={
-                error.home_address
+                error.company_address
                   ? "bg-gray-50 border border-red-300 text-md text-slate-600 rounded-lg block w-full p-3"
                   : "bg-gray-50 border border-gray-300 text-md text-slate-600 rounded-lg block w-full p-3"
               }
-              value={father.home_address}
+              value={father.company_address}
               onChange={handleChangeTextArea}
               autoComplete="off"
               rows={5}
               autoResize
-              required
             />
-            {error.home_address && (
-              <small className="ms-1 text-red-600">{error.home_address}</small>
+            {error.company_address && (
+              <small className="ms-1 text-red-600">
+                {error.company_address}
+              </small>
             )}
           </div>
         </div>
@@ -343,7 +549,6 @@ export default function RegisFather({ ...props }) {
               value={father.telephone}
               onChange={handleChange}
               autoComplete="off"
-              required
             />
             {error.telephone && (
               <small className="ms-1 text-red-600">{error.telephone}</small>
@@ -406,25 +611,23 @@ export default function RegisFather({ ...props }) {
               Home Address <span style={{ color: "red" }}>*</span>
             </label>
             <InputTextarea
-              id="company_address"
-              name="company_address"
+              id="home_address"
+              name="home_address"
               placeholder="Enter Home Address"
               className={
-                error.company_address
+                error.home_address
                   ? "bg-gray-50 border border-red-300 text-md text-slate-600 rounded-lg block w-full p-3"
                   : "bg-gray-50 border border-gray-300 text-md text-slate-600 rounded-lg block w-full p-3"
               }
-              value={father.company_address}
+              value={father.home_address}
               onChange={handleChangeTextArea}
               autoComplete="off"
               rows={5}
               autoResize
               required
             />
-            {error.company_address && (
-              <small className="ms-1 text-red-600">
-                {error.company_address}
-              </small>
+            {error.home_address && (
+              <small className="ms-1 text-red-600">{error.home_address}</small>
             )}
           </div>
         </div>
@@ -437,13 +640,17 @@ export default function RegisFather({ ...props }) {
             <i className="fa-solid fa-chevron-right fa-rotate-180 me-2"></i>
             Previous
           </button>
-          <button
-            type="submit"
-            className="max-w-lg text-white bg-[#e07c39] hover:bg-[#e25d04ee] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
-          >
-            Next
-            <i className="ms-2 fa-solid fa-angle-right"></i>
-          </button>
+          {isSubmit ? (
+            <Submit />
+          ) : (
+            <button
+              type="submit"
+              className="max-w-lg text-white bg-[#e07c39] hover:bg-[#e25d04ee] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+            >
+              Next
+              <i className="ms-2 fa-solid fa-angle-right"></i>
+            </button>
+          )}
         </div>
       </form>
     </div>

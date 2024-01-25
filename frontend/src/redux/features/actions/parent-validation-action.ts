@@ -30,8 +30,13 @@ export const actionValidationParent: any =
       console.log(response);
       dispatch(parentSuccess());
       reqParent(parent, identity);
-      setIdx(2);
-      setForm("father");
+      if (identity == "father") {
+        setIdx(3);
+        setForm("b/s");
+      } else {
+        setIdx(2);
+        setForm("father");
+      }
     } catch (error) {
       // console.log(error, "<<<<<<<<<<<<MASUK ERROR");
       dispatch(parentFailure("Internal server error"));

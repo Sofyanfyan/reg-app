@@ -121,7 +121,6 @@ export default function RegisMother({ ...props }) {
       mobilephone,
       id_or_passport,
       nationality,
-      phone,
       email,
     } = mother;
 
@@ -260,6 +259,23 @@ export default function RegisMother({ ...props }) {
       }
       return;
     }
+
+    setError({
+      name: "",
+      place_birth: "",
+      religion: "",
+      date_birth: "",
+      occupation: "",
+      company_name: "",
+      company_address: "",
+      home_address: "",
+      telephone: "",
+      mobilephone: "",
+      id_or_passport: "",
+      nationality: "",
+      phone: "",
+      email: "",
+    });
 
     setSubmit(true);
     performValidation();

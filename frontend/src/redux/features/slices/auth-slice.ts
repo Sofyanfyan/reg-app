@@ -39,6 +39,7 @@ export const auth = createSlice({
           localStorage.setItem("access_token", data.access_token);
           localStorage.setItem("email", data.user.email);
           localStorage.setItem("name", data.user.name);
+          localStorage.setItem("relation", data.user.relation);
           const Toast = Swal.mixin({
             toast: true,
             position: "top-end",
@@ -80,6 +81,7 @@ export const auth = createSlice({
         localStorage.setItem("access_token", data.access_token);
         localStorage.setItem("email", data.user.email);
         localStorage.setItem("name", data.user.name);
+        localStorage.setItem("relation", data.user.relation);
         const Toast = Swal.mixin({
           toast: true,
           position: "top-end",
