@@ -32,7 +32,8 @@ export default function RegisFather({ ...props }) {
     "Confucianism",
   ];
 
-  const [father, setFather] = useState({
+  const [father, setFather] = useState<IParent>({
+    relation: "father",
     name: "",
     place_birth: "",
     religion: "",
@@ -70,8 +71,15 @@ export default function RegisFather({ ...props }) {
     const name = localStorage.getItem("name");
     const email = localStorage.getItem("email");
     const relation = localStorage.getItem("relation");
+    let localFather = localStorage.getItem("reqFATHER");
 
-    if (relation == "father" && name && email) {
+    if (localFather) {
+      setFather(JSON.parse(localFather));
+
+      console.log(JSON.parse(localFather));
+
+      setDateBirth(new Date(JSON.parse(localFather).date_birth));
+    } else if (relation == "father" && name && email) {
       setFather((prevState) => ({ ...prevState, name }));
       setFather((prevState) => ({ ...prevState, email }));
       setFather((prevState) => ({ ...prevState, relation }));

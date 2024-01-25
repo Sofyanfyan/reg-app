@@ -14,7 +14,7 @@ export default function RegisBrotherSister({ ...props }) {
   const [dateBirth4, setDateBirth4] = useState<Nullable<Date>>();
   const [dateBirth5, setDateBirth5] = useState<Nullable<Date>>();
 
-  const [user, setUser] = useState({
+  const [user, setUser] = useState<IBs>({
     brotherOrSisterName1: "",
     brotherOrSisterBirth_date1: "",
     brotherOrSisterGrade1: "",

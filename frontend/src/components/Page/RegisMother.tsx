@@ -36,7 +36,7 @@ export default function RegisMother({ ...props }) {
     "Confucianism",
   ];
 
-  const [mother, setMother] = useState({
+  const [mother, setMother] = useState<IParent>({
     relation: "mother",
     name: "",
     place_birth: "",
