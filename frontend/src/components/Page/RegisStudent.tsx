@@ -88,14 +88,6 @@ export default function RegisStudent({ ...props }) {
   const grade = useSelector((state: any) => {
     return state.gradeReducer;
   });
-
-  const validationLoading = useSelector((state: any) => {
-    return state.studentValidationReducer.loading;
-  });
-
-  const validationError = useSelector((state: any) => {
-    return state.studentValidationReducer.error;
-  });
   // const grade = useSelector((state: any) => {
   //   return state.gradeReducer;
   // });

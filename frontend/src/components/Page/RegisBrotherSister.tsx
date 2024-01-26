@@ -1,14 +1,18 @@
 "use client";
 
 import formatedDate from "@/helpers/formatedDate";
+import Swal from "sweetalert2";
 import { studentRegisterAction } from "@/redux/features/actions/student-register-action";
 import { Calendar } from "primereact/calendar";
 import { InputText } from "primereact/inputtext";
 import { Nullable } from "primereact/ts-helpers";
 import { ChangeEvent, FormEvent, useState } from "react";
+import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 
 export default function RegisBrotherSister({ ...props }) {
+  const dispatch = useDispatch();
+  const router = useRouter();
   const { setIdx, setForm } = props;
   const [totBS, setTotBS] = useState(1);
   const [dateBirth1, setDateBirth1] = useState<Nullable<Date>>();
@@ -16,8 +20,6 @@ export default function RegisBrotherSister({ ...props }) {
   const [dateBirth3, setDateBirth3] = useState<Nullable<Date>>();
   const [dateBirth4, setDateBirth4] = useState<Nullable<Date>>();
   const [dateBirth5, setDateBirth5] = useState<Nullable<Date>>();
-
-  const dispatch = useDispatch();
 
   const [user, setUser] = useState<IBs>({
     brotherOrSisterName1: "",
@@ -54,6 +56,10 @@ export default function RegisBrotherSister({ ...props }) {
     brotherOrSisterGrade5: "",
   });
 
+  const redirect = (link: string) => {
+    router.push(link);
+  };
+
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
     const { name, value } = event.target;
@@ -61,17 +67,34 @@ export default function RegisBrotherSister({ ...props }) {
     setUser((prevState) => ({ ...prevState, [name]: value }));
   };
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     // setIdx(4);
     // console.log(user);
-
-    performSubmit();
-    // console.log("Submit");
-  };
-
-  const performSubmit = async () => {
-    await dispatch(studentRegisterAction(user));
+    await studentRegisterAction(user, redirect)
+      .then(() => {
+        const Toast = Swal.mixin({
+          toast: true,
+          position: "top-end",
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.onmouseenter = Swal.stopTimer;
+            toast.onmouseleave = Swal.resumeTimer;
+          },
+        });
+        Toast.fire({
+          icon: "success",
+          title: "Register success",
+        });
+        redirect("/users");
+      })
+      .catch((error: any) => {
+        console.log("==================ERROR===================");
+        console.log(error);
+        console.log("==================ERROR===================");
+      });
   };
 
   const handlePrev = (event: FormEvent<HTMLButtonElement>) => {

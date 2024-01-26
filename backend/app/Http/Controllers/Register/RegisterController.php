@@ -338,7 +338,9 @@ class RegisterController extends Controller
         
             $student = Student::create($credential_student);
             $this->handleBrotherOrSister($request, $student);
-            
+
+            DB::commit();
+
             return response()->json((object) [
                 'code' => 201,
                 'data' => $student,
