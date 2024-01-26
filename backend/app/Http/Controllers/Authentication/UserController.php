@@ -163,7 +163,7 @@ class UserController extends Controller
             // return $err;
             return response()->json([
                 'code' => 500,
-                'msg' => 'Internal server error',
+                'msg' => $err,
             ], 500);
         }
     }

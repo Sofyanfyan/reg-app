@@ -9,7 +9,7 @@ class Father extends Model
 {
     use HasFactory;
     
-    protected $rules = [
+    protected $fillable = [
         'id',
         'user_id',
         'name',

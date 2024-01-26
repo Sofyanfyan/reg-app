@@ -12,6 +12,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Exception;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Validator;
 
@@ -143,25 +144,12 @@ class RegisterController extends Controller
 
 
     public function register(Request $request) {
+
+        DB::beginTransaction();
         try {
 
             $user = auth()->guard('api')->user();
-
-
-            $credential_student = [
-                'name' => $request->studentName,
-                'grade_id' => (int)$request->gradeId,
-                'gender' => $request->studentGender,
-                'religion' => $request->studentReligion,
-                'place_birth' => $request->studentPlace_birth,
-                'date_birth' => $request->studentDate_birth,
-                'id_or_passport' => $request->studentId_or_passport,
-                'nationality' => $request->studentNationality,
-                'place_of_issue' => $request->studentPlace_of_issue,
-                'date_exp' => $request->studentDate_exp,
-                'user_id' => $user->id,
-            ];
-
+            
             $credential_father = [
                 'user_id' => $user->id,
                 'name'=> $request->fatherName,
@@ -179,7 +167,7 @@ class RegisterController extends Controller
                 'phone' => $request->fatherCompany_phone,
                 'email' => $request->fatherEmail,
             ];
-
+            
             $credential_mother = [
                 'user_id' => $user->id,
                 'name'=> $request->motherName,
@@ -241,9 +229,9 @@ class RegisterController extends Controller
             'mother_telephone' => $request->motherTelephhone,
             'mother_mobilephone' => $request->motherMobilephone,
             'mother_email' => $request->motherEmail,
-
+            
             //brother and sister
-
+            
             'brotherOrSisterName1' => $request->brotherOrSisterName1, 
             'brotherOrSisterBirth_date1' => $request->brotherOrSisterBirth_date1,
             'brotherOrSisterGrade1' => $request->brotherOrSisterGrade1,
@@ -261,18 +249,18 @@ class RegisterController extends Controller
             'brotherOrSisterGrade5' => $request->brotherOrSisterGrade5,
             
         ];
-            
-
-            $validator = Validator::make($rules, [
-                'name' => 'required|string|min:3',
-                'grade_id' => 'required|integer',
-                'gender' => 'required|string',
-                'religion' => 'required|string',
-                'nisn' => 'nullable|string|min:7|max:12|unique:students',
-                'place_birth' => 'required|string',
-                'date_birth' => 'required|date',
-                'id_or_passport' => 'nullable|string|min:9|max:16|unique:students',
-                'nationality' => 'required|string|min:3',
+        
+        
+        $validator = Validator::make($rules, [
+            'name' => 'required|string|min:3',
+            'grade_id' => 'required|integer',
+            'gender' => 'required|string',
+            'religion' => 'required|string',
+            'nisn' => 'nullable|string|min:7|max:12|unique:students',
+            'place_birth' => 'required|string',
+            'date_birth' => 'required|date',
+            'id_or_passport' => 'nullable|string|min:5|max:16|unique:students',
+            'nationality' => 'required|string|min:3',
                 'place_of_issue' => 'nullable|string',
                 'date_exp' => 'nullable|date',
                 // father validation 
@@ -280,7 +268,7 @@ class RegisterController extends Controller
                 'father_religion' => 'required|string',
                 'father_place_birth' => 'required|string',
                 'father_date_birth' => 'required|date',
-                'father_id_or_passport' => 'required|string|min:12|max:16',
+                'father_id_or_passport' => 'required|string|min:5|max:16',
                 'father_nationality' => 'required|string',
                 'father_phone' => 'nullable|string|max:15|min:6',
                 'father_home_address' => 'required|string',
@@ -292,7 +280,7 @@ class RegisterController extends Controller
                 'mother_religion' => 'required|string',
                 'mother_place_birth' => 'required|string',
                 'mother_date_birth' => 'required|date',
-                'mother_id_or_passport' => 'required|string|min:15|max:16',
+                'mother_id_or_passport' => 'required|string|min:5|max:16',
                 'mother_nationality' => 'required|string',
                 'mother_occupation' => 'nullable|string',
                 'mother_company_name' => 'nullable|string',
@@ -303,7 +291,7 @@ class RegisterController extends Controller
                 'mother_mobilephone' => 'required|string|max:15|min:6',
                 'mother_telephone' => 'nullable|string|max:15|min:6',
                 'mother_email' => 'required|string|email',
-    
+                
                 'brotherOrSisterName1' => 'nullable|string',
                 'brotherOrSisterBirth_date1' => 'nullable|date',
                 'brotherOrSisterGrade1' => 'nullable|string',
@@ -319,21 +307,34 @@ class RegisterController extends Controller
                 'brotherOrSisterName5' =>  'nullable|string',
                 'brotherOrSisterBirth_date5'=>'nullable|date',
                 'brotherOrSisterGrade5' => 'nullable|string',
-             ]);
-
-
-             if($validator->fails()){
+            ]);
+            
+            
+            if($validator->fails()){
                 return response()->json((object)[
                     'code' => 400,
                     'msg' => $validator->errors()
                 ], 400);
             }
-            
             $mother = Mother::create($credential_mother);
             $father = Father::create($credential_father);
+            
 
-            array_push($credential_student, $father->id, 'father_id');
-            array_push($credential_student, $mother->id, 'mother_id');
+            $credential_student = [
+                'name' => $request->studentName,
+                'grade_id' => (int)$request->gradeId,
+                'gender' => $request->studentGender,
+                'religion' => $request->studentReligion,
+                'place_birth' => $request->studentPlace_birth,
+                'date_birth' => $request->studentDate_birth,
+                'id_or_passport' => $request->studentId_or_passport,
+                'nationality' => $request->studentNationality,
+                'place_of_issue' => $request->studentPlace_of_issue,
+                'date_exp' => $request->studentDate_exp,
+                'user_id' => $user->id,
+                'father_id' => $father->id,
+                'mother_id' => $mother->id,
+            ];
         
             $student = Student::create($credential_student);
             $this->handleBrotherOrSister($request, $student);
@@ -345,10 +346,11 @@ class RegisterController extends Controller
 
 
         } catch (Exception $err) {
+            DB::rollBack();
             return response()->json((object) [
                 'code' => 500,
-                'msg' => "Internal server error",
-            ], 500);
+                'msg' => $err,
+            ], 200);
         }
     }
 

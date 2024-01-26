@@ -37,6 +37,8 @@ Route::middleware(['email.verified'])->prefix('auth')->group(function () {
         Route::post('students', [RegisterController::class, 'checkFieldStudent']);
         Route::post('parents', [RegisterController::class, 'checkFieldParent']);
     });
+    
+    Route::post('registers/students', [RegisterController::class, 'register']);
 
     Route::prefix('grades')->group(function () {
         Route::get('/', [GradeController::class, 'getAll']);

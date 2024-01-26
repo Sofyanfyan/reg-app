@@ -1,9 +1,12 @@
 "use client";
 
+import formatedDate from "@/helpers/formatedDate";
+import { studentRegisterAction } from "@/redux/features/actions/student-register-action";
 import { Calendar } from "primereact/calendar";
 import { InputText } from "primereact/inputtext";
 import { Nullable } from "primereact/ts-helpers";
 import { ChangeEvent, FormEvent, useState } from "react";
+import { useDispatch } from "react-redux";
 
 export default function RegisBrotherSister({ ...props }) {
   const { setIdx, setForm } = props;
@@ -13,6 +16,8 @@ export default function RegisBrotherSister({ ...props }) {
   const [dateBirth3, setDateBirth3] = useState<Nullable<Date>>();
   const [dateBirth4, setDateBirth4] = useState<Nullable<Date>>();
   const [dateBirth5, setDateBirth5] = useState<Nullable<Date>>();
+
+  const dispatch = useDispatch();
 
   const [user, setUser] = useState<IBs>({
     brotherOrSisterName1: "",
@@ -52,19 +57,26 @@ export default function RegisBrotherSister({ ...props }) {
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
     const { name, value } = event.target;
-    console.log(name, value);
+    // console.log(name, value);
     setUser((prevState) => ({ ...prevState, [name]: value }));
   };
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setIdx(4);
-    console.log("Submit");
+    // setIdx(4);
+    // console.log(user);
+
+    performSubmit();
+    // console.log("Submit");
+  };
+
+  const performSubmit = async () => {
+    await dispatch(studentRegisterAction(user));
   };
 
   const handlePrev = (event: FormEvent<HTMLButtonElement>) => {
     event.preventDefault();
-    console.log("prev");
+    // console.log("prev");
     setIdx(2);
     setForm("father");
   };
@@ -129,7 +141,20 @@ export default function RegisBrotherSister({ ...props }) {
                     }
                     style={{ width: "100%" }}
                     value={dateBirth1}
-                    onChange={(e) => setDateBirth1(e.value)}
+                    onChange={(e) => {
+                      e.preventDefault();
+                      const { value } = e;
+
+                      // console.log(value);
+                      setDateBirth1(value);
+
+                      setUser((prevState) => ({
+                        ...prevState,
+                        brotherOrSisterBirth_date1: value
+                          ? formatedDate(value)
+                          : "",
+                      }));
+                    }}
                     placeholder="Date of birth"
                     dateFormat="dd/mm/yy"
                     locale="en"
@@ -218,7 +243,19 @@ export default function RegisBrotherSister({ ...props }) {
                     }
                     style={{ width: "100%" }}
                     value={dateBirth2}
-                    onChange={(e) => setDateBirth2(e.value)}
+                    onChange={(e) => {
+                      e.preventDefault();
+                      const { value } = e;
+
+                      setDateBirth2(value);
+
+                      setUser((prevState) => ({
+                        ...prevState,
+                        brotherOrSisterBirth_date2: value
+                          ? formatedDate(value)
+                          : "",
+                      }));
+                    }}
                     placeholder="Date of birth"
                     dateFormat="dd/mm/yy"
                     locale="en"
@@ -307,7 +344,19 @@ export default function RegisBrotherSister({ ...props }) {
                     }
                     style={{ width: "100%" }}
                     value={dateBirth3}
-                    onChange={(e) => setDateBirth3(e.value)}
+                    onChange={(e) => {
+                      e.preventDefault();
+                      const { value } = e;
+
+                      setDateBirth3(value);
+
+                      setUser((prevState) => ({
+                        ...prevState,
+                        brotherOrSisterBirth_date3: value
+                          ? formatedDate(value)
+                          : "",
+                      }));
+                    }}
                     placeholder="Date of birth"
                     dateFormat="dd/mm/yy"
                     locale="en"
@@ -532,7 +581,7 @@ export default function RegisBrotherSister({ ...props }) {
                 if (totBS >= 2) {
                   setTotBS(totBS - 1);
                 }
-                console.log(totBS);
+                // console.log(totBS);
               }}
             >
               <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white rounded-md group-hover:bg-opacity-0">
@@ -553,7 +602,7 @@ export default function RegisBrotherSister({ ...props }) {
                 if (totBS <= 4) {
                   setTotBS(totBS + 1);
                 }
-                console.log(totBS);
+                // console.log(totBS);
               }}
             >
               <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white rounded-md group-hover:bg-opacity-0">

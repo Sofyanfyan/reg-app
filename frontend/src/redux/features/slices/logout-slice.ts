@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   loading: false,
-  error: "",
+  error: null,
 };
 
 const logoutSlice = createSlice({
@@ -14,6 +14,7 @@ const logoutSlice = createSlice({
     },
     logoutSuccess: (state) => {
       state.loading = false;
+      state.error = null;
     },
     logoutFailure: (state, action) => {
       state.loading = false;
