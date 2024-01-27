@@ -1,3 +1,19 @@
+type payloadLogin = {
+  email: string;
+  password: string;
+};
+
+type payloadRegister = {
+  name: string;
+  email: string;
+  password: string;
+  relation: string;
+};
+
+type payloadVerify = {
+  otp: number;
+};
+
 type IStudent = {
   grade_id: any;
   name: string;

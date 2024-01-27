@@ -3,8 +3,8 @@ import { ChangeEvent, FormEvent, useState } from "react";
 import Loading from "../btn/Loading";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/redux/store";
-import { register } from "@/redux/features/slices/auth-slice";
 import { useRouter } from "next/navigation";
+import { actionRegister } from "@/redux/features/actions/auth-action";
 
 export default function Register() {
   const [isHide, setHide] = useState(true);
@@ -171,19 +171,7 @@ export default function Register() {
       }));
     }
 
-    setSubmit(true);
-    dispatch(
-      register({
-        name: push.name,
-        email: push.email,
-        password: push.password,
-        relation: push.relation,
-      })
-    );
-
-    if (localStorage.getItem("access_token")) {
-      router.push("/email-verifications");
-    }
+    actionRegister(push, dispatch, redirect, setSubmit, setError);
   };
 
   const emailClassName =
@@ -208,7 +196,7 @@ export default function Register() {
             id="name"
             name="name"
             placeholder="Name"
-            className={error.email ? errorEmailClassName : emailClassName}
+            className={error.name ? errorEmailClassName : emailClassName}
             value={push.name}
             onChange={handleEventChangeInput}
           />

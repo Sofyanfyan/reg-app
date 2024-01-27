@@ -1,10 +1,10 @@
 "use client";
 import { ChangeEvent, FormEvent, useState } from "react";
 import Loading from "../btn/Loading";
-import { logIn, logOut } from "@/redux/features/slices/auth-slice";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/redux/store";
 import { useRouter } from "next/navigation";
+import { actionLogin } from "@/redux/features/actions/auth-action";
 
 export default function Login() {
   const [isHide, setHide] = useState(true);
@@ -20,8 +20,8 @@ export default function Login() {
     password: "",
   });
 
-  const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
+  const dispatch = useDispatch<AppDispatch>();
   const btnClassName =
     "text-white w-full bg-[#e4532f] hover:bg-[#e98369] focus:outline-none focus:ring-4 focus:ring-red-300 font-medium rounded-full text-sm px-6 py-2.5 text-center me-2 mb-2";
   const btnDisable =
@@ -34,6 +34,10 @@ export default function Login() {
     if (push.email && push.password)
       setPush((prevState) => ({ ...prevState, isValid: false }));
     else setPush((prevState) => ({ ...prevState, isValid: true }));
+  };
+
+  const redirect = (link: string) => {
+    router.push(link);
   };
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
@@ -67,16 +71,7 @@ export default function Login() {
 
     setSubmit(true);
 
-    dispatch(
-      logIn({
-        email: push.email,
-        password: push.password,
-      })
-    );
-
-    if (localStorage.getItem("access_token")) {
-      router.push("/users");
-    }
+    actionLogin(push, dispatch, redirect, setSubmit, setError);
   };
 
   const emailClassName =

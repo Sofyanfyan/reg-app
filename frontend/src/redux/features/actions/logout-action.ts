@@ -6,6 +6,7 @@ import {
   logoutSuccess,
 } from "../slices/logout-slice";
 import { Dispatch } from "@reduxjs/toolkit";
+import { removeLocalStorage } from "./auth-action";
 
 export const actionLogout: any = () => async (dispatch: Dispatch<any>) => {
   try {
@@ -20,7 +21,7 @@ export const actionLogout: any = () => async (dispatch: Dispatch<any>) => {
     });
 
     dispatch(logoutSuccess);
-    localStorage.clear();
+    removeLocalStorage();
     window.location.href = "/";
   } catch (error) {
     dispatch(logoutFailure(error));
