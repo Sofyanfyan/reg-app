@@ -3,7 +3,8 @@ import { FormEvent, useState, useEffect, ChangeEvent } from "react";
 import { useDispatch } from "react-redux";
 import { verify } from "@/redux/features/slices/auth-slice";
 import { AppDispatch } from "@/redux/store";
-import Swal from "sweetalert2";
+import React from "react";
+import Countdown from "react-countdown";
 
 export default function EmailVerification() {
   const [otp, setOtp] = useState({
@@ -15,6 +16,7 @@ export default function EmailVerification() {
     code_6: "",
   });
   const [email, setEmail] = useState("Invalid email");
+  const [isExpired, setExpired] = useState<boolean>(false);
   const dispatch = useDispatch<AppDispatch>();
 
   const focusNextInput = (el: number, prevId: string, nextId: string) => {
@@ -61,6 +63,37 @@ export default function EmailVerification() {
     );
   };
 
+  const Completionist = () => (
+    <span className="text-red-800 font-bold">Time has Expired!</span>
+  );
+
+  const expired = async () => {
+    await setExpired(true);
+    return <Completionist />;
+  };
+
+  const renderer = ({ hours, minutes, seconds, completed }: any) => {
+    // if (completed) {
+    // }
+    if (completed) {
+      expired();
+    } else {
+      if (seconds > 10) {
+        return (
+          <span className="text-green-500 font-semibold">
+            0{minutes}:{seconds}
+          </span>
+        );
+      } else {
+        return (
+          <span className="text-green-500 font-semibold">
+            0{minutes}:0{seconds}
+          </span>
+        );
+      }
+    }
+  };
+
   const handleResend = () => {
     console.log("ketrigger");
   };
@@ -98,6 +131,13 @@ export default function EmailVerification() {
               We send you the six digit code to
               <span className="text-gray-700 font-bold"> {email}</span>.
             </p>
+            <div className="max-w flex justify-center items-center">
+              <Countdown
+                date={Date.now() + 1000 * 5}
+                precision={3}
+                renderer={renderer}
+              />
+            </div>
             <div className="flex justify-center space-x-3 rtl:space-x-reverse">
               <div>
                 <label className="sr-only">First code</label>
@@ -220,26 +260,13 @@ export default function EmailVerification() {
                 />
               </div>
             </div>
-            <div className="flex flex-col justify-center items-center space-y-2">
+            <div className="flex flex-col justify-center items-center my-10">
               <button
                 role="submit"
                 className="w-56 py-3 text-sm font-medium text-center text-white bg-[#ee913b] rounded-lg hover:bg-[#ee913bcb] focus:ring-4 focus:outline-none focus:ring-blue-300"
               >
-                Verify Now
+                {isExpired ? "Resent OTP" : "Verify Now"}
               </button>
-              <p className="mt-2 text-md text-gray-700 text-center">
-                This passcode will only be valid for next <span>5 minutes</span>
-                .
-              </p>
-              <p className="mt-2 text-md text-gray-700 text-center">
-                If you haven't received the code, you can{" "}
-                <span
-                  className="text-[#ee913b] font-semibold hover:cursor-pointer"
-                  onClick={handleResend}
-                >
-                  resend it
-                </span>
-              </p>
             </div>
           </form>
         </div>

@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use PhpParser\Builder\Function_;
 use PHPUnit\Event\Code\Test;
 
 class UserController extends Controller
@@ -163,10 +164,12 @@ class UserController extends Controller
             // return $err;
             return response()->json([
                 'code' => 500,
-                'msg' => $err,
+                'msg' => "Internal server error",
             ], 500);
         }
     }
+
+
 
 
     public function verification(Request $request){

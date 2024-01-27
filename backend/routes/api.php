@@ -24,7 +24,7 @@ Route::post('/login', [UserController::class, 'login']);
 
 Route::middleware(['auth.guard'])->prefix('users')->group(function () {
     Route::post('email-verifications', [UserController::class, 'verification']);
-    Route::get('/resend-emails', [UserController::class, 'resendEmail']);
+    Route::post('/resend-emails', [UserController::class, 'resendEmail']);
 });
 
 Route::middleware(['email.verified'])->prefix('auth')->group(function () {
