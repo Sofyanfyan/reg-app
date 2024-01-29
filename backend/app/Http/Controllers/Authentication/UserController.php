@@ -7,6 +7,8 @@ use App\Jobs\SendEmailQueueJob;
 use App\Models\User;
 use App\Models\VerificationCode;
 use Carbon\Carbon;
+use DateTime;
+use DateTimeZone;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -178,6 +180,8 @@ class UserController extends Controller
         
         try {
             //code...
+            date_default_timezone_set('Asia/Jakarta');
+
             $user = auth()->guard('api')->user();
             $user = User::with('verification_code')->where('id', $user->id)->first();
             
@@ -193,19 +197,18 @@ class UserController extends Controller
                     'msg' => $validator->messages() 
                 ], 400);
             }
-
+            
+            if(new DateTime($user->verification_code->expire_at) < new DateTime(now())){
+                return response()->json([
+                    'code' => 408,
+                    'msg' => 'Code has Expired!',
+                ], 408);
+            }
             if($user->verification_code->otp != $request->otp){
                 return response()->json([
                     'code' => 417,
-                    'msg' => 'Code not match',
+                    'msg' => 'Code not match!',
                 ], 417);
-            }
-
-            if($user->verification_code->expire_at < date('Y-m-d h:i:s')){
-                return response()->json([
-                    'code' => 408,
-                    'msg' => 'Code time out',
-                ], 408);
             }
 
             User::where('id', $user->id)->update([
@@ -223,7 +226,7 @@ class UserController extends Controller
             DB::rollBack();
             return response()->json([
                 'code' => 500,
-                'msg' => 'Internal server error',
+                'msg' => 'Internal server error!',
             ], 500);
         }
     }

@@ -195,3 +195,56 @@ export const fetchGetExpire: any = createAsyncThunk("get/otp", async () => {
     throw error;
   }
 });
+
+export const actionVerify: any = (
+  code: string,
+  dispatch: Dispatch,
+  redirect: any
+) => {
+  const token = localStorage.getItem("access_token");
+  axios
+    .post(
+      baseUrl + "/users/email-verifications",
+      { otp: code },
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    )
+    .then(({ data }) => {
+      console.log(data);
+      const Toast = Swal.mixin({
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.onmouseenter = Swal.stopTimer;
+          toast.onmouseleave = Swal.resumeTimer;
+        },
+      });
+      Toast.fire({
+        icon: "success",
+        title: "Your account verified!",
+      });
+    })
+    .catch((error) => {
+      const { code, msg } = error.response.data;
+
+      const Toast = Swal.mixin({
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.onmouseenter = Swal.stopTimer;
+          toast.onmouseleave = Swal.resumeTimer;
+        },
+      });
+      Toast.fire({
+        icon: "error",
+        title: msg,
+      });
+    });
+};
