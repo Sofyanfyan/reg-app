@@ -10,6 +10,7 @@ import logoutReducer from "./features/slices/logout-slice";
 import studentValidationReducer from "./features/slices/student-validation-slice";
 import parentValidationReducer from "./features/slices/parent-validation-slice";
 import registerStudentReducer from "./features/slices/student-register-slice";
+import otpReducer from "./features/slices/otp-slice";
 import thunk from "redux-thunk";
 
 const middleware = [...getDefaultMiddleware(), thunk];
@@ -17,6 +18,7 @@ const middleware = [...getDefaultMiddleware(), thunk];
 export const store = configureStore({
   reducer: {
     authReducer,
+    otpReducer,
     gradeReducer,
     logoutReducer,
     studentValidationReducer,

@@ -1,6 +1,6 @@
 import axios from "axios";
 import { baseUrl } from "@/redux/baseUrl";
-import { Dispatch } from "@reduxjs/toolkit";
+import { Dispatch, createAsyncThunk } from "@reduxjs/toolkit";
 import Swal from "sweetalert2";
 import {
   logInStart,
@@ -180,3 +180,18 @@ export const actionRegister = (
       });
     });
 };
+
+export const fetchGetExpire: any = createAsyncThunk("get/otp", async () => {
+  try {
+    const response = await axios({
+      method: "GET",
+      url: baseUrl + "/users/get-expire",
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+      },
+    });
+    return response.data.data;
+  } catch (error) {
+    throw error;
+  }
+});

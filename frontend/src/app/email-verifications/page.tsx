@@ -1,10 +1,13 @@
 "use client";
 import { FormEvent, useState, useEffect, ChangeEvent } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { verify } from "@/redux/features/slices/auth-slice";
 import { AppDispatch } from "@/redux/store";
 import React from "react";
 import Countdown from "react-countdown";
+import Verify from "@/components/btn/Verify";
+import { fetchGetExpire } from "@/redux/features/actions/auth-action";
+import LoadingSync from "@/components/Content/LoadingSync";
 
 export default function EmailVerification() {
   const [otp, setOtp] = useState({
@@ -16,7 +19,6 @@ export default function EmailVerification() {
     code_6: "",
   });
   const [email, setEmail] = useState("Invalid email");
-  const [isExpired, setExpired] = useState<boolean>(false);
   const dispatch = useDispatch<AppDispatch>();
 
   const focusNextInput = (el: number, prevId: string, nextId: string) => {
@@ -33,8 +35,27 @@ export default function EmailVerification() {
 
   useEffect(() => {
     let value = localStorage.getItem("email") || "Invalid email";
+    dispatch(fetchGetExpire());
     setEmail(value);
   }, []);
+
+  const state = useSelector((state: any) => {
+    return state.otpReducer;
+  });
+
+  console.log(state);
+
+  if (state.loading) {
+    return (
+      <div className="w-screen h-screen">
+        <LoadingSync />
+      </div>
+    );
+  }
+
+  if (state.error) {
+    return <h1>Error!</h1>;
+  }
 
   const handleEventChange = (event: ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
@@ -56,27 +77,23 @@ export default function EmailVerification() {
 
     console.log(code);
 
-    dispatch(
-      verify({
-        otp: +code,
-      })
-    );
+    // dispatch(
+    //   verify({
+    //     otp: +code,
+    //   })
+    // );
   };
 
   const Completionist = () => (
     <span className="text-red-800 font-bold">Time has Expired!</span>
   );
 
-  const expired = async () => {
-    await setExpired(true);
-    return <Completionist />;
-  };
-
   const renderer = ({ hours, minutes, seconds, completed }: any) => {
-    // if (completed) {
-    // }
+    // console.log("====================================");
+    // console.log(Date.now(), new Date());
+    // console.log("====================================");`
     if (completed) {
-      expired();
+      return <Completionist />;
     } else {
       if (seconds > 10) {
         return (
@@ -92,10 +109,6 @@ export default function EmailVerification() {
         );
       }
     }
-  };
-
-  const handleResend = () => {
-    console.log("ketrigger");
   };
 
   return (
@@ -133,7 +146,7 @@ export default function EmailVerification() {
             </p>
             <div className="max-w flex justify-center items-center">
               <Countdown
-                date={Date.now() + 1000 * 5}
+                date={new Date(state.data.expire_at).getTime()}
                 precision={3}
                 renderer={renderer}
               />
@@ -261,12 +274,8 @@ export default function EmailVerification() {
               </div>
             </div>
             <div className="flex flex-col justify-center items-center my-10">
-              <button
-                role="submit"
-                className="w-56 py-3 text-sm font-medium text-center text-white bg-[#ee913b] rounded-lg hover:bg-[#ee913bcb] focus:ring-4 focus:outline-none focus:ring-blue-300"
-              >
-                {isExpired ? "Resent OTP" : "Verify Now"}
-              </button>
+              {/* button */}
+              <Verify />
             </div>
           </form>
         </div>

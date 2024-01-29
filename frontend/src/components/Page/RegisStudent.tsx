@@ -9,16 +9,15 @@ import {
   DropdownPassThroughMethodOptions,
 } from "primereact/dropdown";
 import formatedDate from "@/helpers/formatedDate";
-import { reqStudent } from "@/helpers/request/handleRegister";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchGrades } from "@/redux/features/slices/grade-slice";
-import { SyncLoader } from "react-spinners";
 import { actionValidationStudent } from "@/redux/features/actions/student-validation-action";
 import {
   validationStart,
   validationSuccess,
 } from "@/redux/features/slices/student-validation-slice";
 import Submit from "../btn/Submit";
+import Loading from "../Content/LoadingSync";
 
 export default function RegisStudent({ ...props }) {
   const { setIdx, setForm } = props;
@@ -97,13 +96,7 @@ export default function RegisStudent({ ...props }) {
   }
 
   if (grade.loading) {
-    return (
-      <div className="w-full h-full my-[15%]">
-        <div className="flex justify-center">
-          <SyncLoader color="#c45200" loading size={15} />;
-        </div>
-      </div>
-    );
+    return <Loading />;
   }
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;

@@ -25,6 +25,7 @@ Route::post('/login', [UserController::class, 'login']);
 Route::middleware(['auth.guard'])->prefix('users')->group(function () {
     Route::post('email-verifications', [UserController::class, 'verification']);
     Route::post('/resend-emails', [UserController::class, 'resendEmail']);
+    Route::get('get-expire', [UserController::class, 'getExpireOtp']);
 });
 
 Route::middleware(['email.verified'])->prefix('auth')->group(function () {

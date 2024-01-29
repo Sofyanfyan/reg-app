@@ -260,6 +260,29 @@ class UserController extends Controller
     }
 
 
+    public function getExpireOtp() {
+        try {
+            //code...
+            $user = auth()->guard('api')->user();
+
+            $data = VerificationCode::where('user_id', $user->id)->first(['expire_at']);
+
+
+            return response()->json([
+                'code' => 200,
+                'data' => $data,
+            ], 200);
+
+
+        } catch (Exception $err) {
+            return response()->json([
+                'code' => 500,
+                'msg' => "Internal server error",
+            ], 500);
+        }
+    }
+
+
     public function logOut(){
         
         try {
