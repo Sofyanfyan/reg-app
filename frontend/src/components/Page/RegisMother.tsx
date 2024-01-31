@@ -283,7 +283,9 @@ export default function RegisMother({ ...props }) {
 
   const performValidation = async () => {
     dispatch(parentStart());
-    await dispatch(actionValidationParent(mother, "mother", setIdx, setForm));
+    await dispatch(
+      actionValidationParent(mother, "mother", setIdx, setForm, setError)
+    );
     // setIdx(2);
     // setForm("father");
   };

@@ -9,7 +9,11 @@ import {
   registerStart,
   registerSuccess,
   registerFailure,
+  verifyStart,
+  verifySuccess,
+  verifyFailure,
 } from "../slices/auth-slice";
+import exp from "constants";
 
 const setLocalStorage = (
   access_token: string,
@@ -201,6 +205,7 @@ export const actionVerify: any = (
   dispatch: Dispatch,
   redirect: any
 ) => {
+  dispatch(verifyStart());
   const token = localStorage.getItem("access_token");
   axios
     .post(
@@ -211,7 +216,6 @@ export const actionVerify: any = (
       }
     )
     .then(({ data }) => {
-      console.log(data);
       const Toast = Swal.mixin({
         toast: true,
         position: "top-end",
@@ -227,8 +231,12 @@ export const actionVerify: any = (
         icon: "success",
         title: "Your account verified!",
       });
+      redirect("/users");
+
+      dispatch(verifySuccess());
     })
     .catch((error) => {
+      dispatch(verifyFailure(error));
       const { code, msg } = error.response.data;
 
       const Toast = Swal.mixin({
@@ -245,6 +253,84 @@ export const actionVerify: any = (
       Toast.fire({
         icon: "error",
         title: msg,
+      });
+    });
+};
+
+export const resendToken = (
+  dispatch: Dispatch,
+  redirect: any,
+  setLoading: any
+) => {
+  const swalWithBootstrapButtons = Swal.mixin({
+    customClass: {
+      confirmButton:
+        "focus:outline-none text-white bg-[#ee913b] hover:bg-[#ee913b] focus:ring-4 focus:ring-[#facb9fcb] font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2",
+      cancelButton:
+        "text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2",
+    },
+    buttonsStyling: false,
+  });
+  swalWithBootstrapButtons
+    .fire({
+      title: "Code has Expired!",
+      text: "Resend email with new otp code?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes, resend otp!",
+      cancelButtonText: "Cancel",
+      reverseButtons: true,
+    })
+    .then((result) => {
+      if (result.isConfirmed) {
+        setLoading(true);
+        actionResendToken(dispatch, redirect, setLoading);
+      } else if (
+        /* Read more about handling dismissals below */
+        result.dismiss === Swal.DismissReason.cancel
+      ) {
+        swalWithBootstrapButtons.fire({
+          title: "Canceled!",
+          text: "Your otp code isn't updated :)",
+          icon: "error",
+        });
+      }
+    });
+};
+
+const actionResendToken = (
+  dispatch: Dispatch,
+  redirect: any,
+  setLoading: any
+) => {
+  axios({
+    method: "POST",
+    url: baseUrl + "/users/resend-emails",
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+    },
+  })
+    .then(() => {
+      dispatch(fetchGetExpire());
+      redirect("/email-verifications");
+      setLoading(false);
+    })
+    .catch((error) => {
+      setLoading(false);
+      const Toast = Swal.mixin({
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.onmouseenter = Swal.stopTimer;
+          toast.onmouseleave = Swal.resumeTimer;
+        },
+      });
+      Toast.fire({
+        icon: "error",
+        title: "Resend email failure!",
       });
     });
 };

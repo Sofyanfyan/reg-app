@@ -40,48 +40,16 @@ export const auth = createSlice({
       state.loading = false;
       state.error = action.payload;
     },
-    verify: (state, action: PayloadAction<payloadVerify>) => {
-      const token = localStorage.getItem("access_token");
-      axios
-        .post(baseUrl + "/users/email-verifications", action.payload, {
-          headers: { Authorization: `Bearer ${token}` },
-        })
-        .then(({ data }) => {
-          console.log(data);
-          const Toast = Swal.mixin({
-            toast: true,
-            position: "top-end",
-            showConfirmButton: false,
-            timer: 3000,
-            timerProgressBar: true,
-            didOpen: (toast) => {
-              toast.onmouseenter = Swal.stopTimer;
-              toast.onmouseleave = Swal.resumeTimer;
-            },
-          });
-          Toast.fire({
-            icon: "success",
-            title: "Your account verified!",
-          });
-        })
-        .catch((error) => {
-          console.log(error);
-          const Toast = Swal.mixin({
-            toast: true,
-            position: "top-end",
-            showConfirmButton: false,
-            timer: 3000,
-            timerProgressBar: true,
-            didOpen: (toast) => {
-              toast.onmouseenter = Swal.stopTimer;
-              toast.onmouseleave = Swal.resumeTimer;
-            },
-          });
-          Toast.fire({
-            icon: "error",
-            title: error,
-          });
-        });
+    verifyStart: (state) => {
+      state.loading = true;
+    },
+    verifySuccess: (state) => {
+      state.loading = false;
+      state.error = null;
+    },
+    verifyFailure: (state, action: PayloadAction<any>) => {
+      state.loading = false;
+      state.error = action.payload;
     },
   },
 });
@@ -94,6 +62,8 @@ export const {
   registerStart,
   registerSuccess,
   registerFailure,
-  verify,
+  verifyStart,
+  verifySuccess,
+  verifyFailure,
 } = auth.actions;
 export default auth.reducer;

@@ -6,8 +6,16 @@ import {
   validationSuccess,
 } from "../slices/student-validation-slice";
 import { reqStudent } from "@/helpers/request/handleRegister";
+import { error } from "console";
+import Swal from "sweetalert2";
 
-export const actionValidationStudent: any = (student: IStudent) => {
+export const actionValidationStudent: any = (
+  student: IStudent,
+  setIdx: any,
+  setForm: any,
+  setError: any,
+  setSubmit: any
+) => {
   return (dispatch: Dispatch) =>
     axios({
       data: {
@@ -27,12 +35,43 @@ export const actionValidationStudent: any = (student: IStudent) => {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("access_token")}`,
       },
-    }).then((response) => {
-      console.log("masuk");
+    })
+      .then(() => {
+        reqStudent(student);
+        setIdx(2);
+        setForm("mother");
+        setSubmit(false);
+        dispatch(validationSuccess());
+      })
+      .catch((error) => {
+        setSubmit(false);
+        dispatch(validationFailure(error));
+        const { code, msg } = error.response.data;
 
-      console.log(response.data);
+        if (code == 400) {
+          for (const key in msg) {
+            setError((prevState: payloadRegister) => ({
+              ...prevState,
+              [key]: msg[key],
+            }));
+          }
+          return;
+        }
 
-      reqStudent(student);
-      dispatch(validationSuccess());
-    });
+        const Toast = Swal.mixin({
+          toast: true,
+          position: "top-end",
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.onmouseenter = Swal.stopTimer;
+            toast.onmouseleave = Swal.resumeTimer;
+          },
+        });
+        Toast.fire({
+          icon: "error",
+          title: msg,
+        });
+      });
 };

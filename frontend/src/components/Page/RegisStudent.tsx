@@ -219,18 +219,15 @@ export default function RegisStudent({ ...props }) {
       date_exp: "",
     });
     setSubmit(true);
-    // console.log("Next");
-    // console.log(student);
     performValidation();
   };
 
   const performValidation = async () => {
     dispatch(validationStart());
 
-    await dispatch(actionValidationStudent(student));
-
-    setIdx(2);
-    setForm("mother");
+    await dispatch(
+      actionValidationStudent(student, setIdx, setForm, setError, setSubmit)
+    );
   };
 
   return (

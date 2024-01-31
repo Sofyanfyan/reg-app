@@ -139,7 +139,7 @@ class UserController extends Controller
 
                 VerificationCode::where('user_id', $user->id)->update([
                     'otp' => rand(100000, 999999),
-                    'expire_at' => Carbon::now()->addMinutes(7)->setTimezone('Asia/Jakarta'),
+                    'expire_at' => Carbon::now()->addMinutes(5)->setTimezone('Asia/Jakarta'),
                 ]);
 
                 $otp = VerificationCode::where('user_id', $user->id)->first();
@@ -239,7 +239,7 @@ class UserController extends Controller
 
             VerificationCode::where('user_id', $user->id)->update([
                 'otp' => rand(100000, 999999),
-                'expire_at' => Carbon::now()->addMinutes(7)->setTimezone('Asia/Jakarta'),
+                'expire_at' => Carbon::now()->addMinutes(5)->setTimezone('Asia/Jakarta'),
             ]);
 
             $otp = VerificationCode::where('user_id', $user->id)->first();

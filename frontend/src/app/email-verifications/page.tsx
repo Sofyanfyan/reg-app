@@ -1,7 +1,6 @@
 "use client";
 import { FormEvent, useState, useEffect, ChangeEvent } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { verify } from "@/redux/features/slices/auth-slice";
 import { AppDispatch } from "@/redux/store";
 import React from "react";
 import Countdown from "react-countdown";
@@ -12,8 +11,7 @@ import {
 } from "@/redux/features/actions/auth-action";
 import LoadingSync from "@/components/Content/LoadingSync";
 import { useRouter } from "next/navigation";
-import AppRouter from "next/dist/client/components/app-router";
-import Swal from "sweetalert2";
+import { resendToken } from "@/redux/features/actions/auth-action";
 
 export default function EmailVerification() {
   const [otp, setOtp] = useState({
@@ -24,6 +22,7 @@ export default function EmailVerification() {
     code_5: "",
     code_6: "",
   });
+  const [loading, setLoading] = useState<boolean>(false);
   const [email, setEmail] = useState("Invalid email");
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
@@ -50,9 +49,7 @@ export default function EmailVerification() {
     return state.otpReducer;
   });
 
-  console.log(state);
-
-  if (state.loading) {
+  if (state.loading || loading) {
     return (
       <div className="w-screen h-screen">
         <LoadingSync />
@@ -76,46 +73,6 @@ export default function EmailVerification() {
     setOtp((prevState) => ({ ...prevState, [name]: value }));
   };
 
-  const resendToken = () => {
-    const swalWithBootstrapButtons = Swal.mixin({
-      customClass: {
-        confirmButton:
-          "focus:outline-none text-white bg-[#ee913b] hover:bg-[#ee913b] focus:ring-4 focus:ring-[#facb9fcb] font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2",
-        cancelButton:
-          "text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2",
-      },
-      buttonsStyling: false,
-    });
-    swalWithBootstrapButtons
-      .fire({
-        title: "Code has Expired!",
-        text: "Resend email with new otp code?",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonText: "Yes, resend otp!",
-        cancelButtonText: "Cancel",
-        reverseButtons: true,
-      })
-      .then((result) => {
-        if (result.isConfirmed) {
-          swalWithBootstrapButtons.fire({
-            title: "Canceled!",
-            text: "Your otp code isn't updated :)",
-            icon: "success",
-          });
-        } else if (
-          /* Read more about handling dismissals below */
-          result.dismiss === Swal.DismissReason.cancel
-        ) {
-          swalWithBootstrapButtons.fire({
-            title: "Canceled!",
-            text: "Your otp code isn't updated :)",
-            icon: "error",
-          });
-        }
-      });
-  };
-
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const code =
@@ -127,17 +84,11 @@ export default function EmailVerification() {
       otp.code_6;
 
     if (new Date(state.data.expire_at).getTime() < new Date().getTime()) {
-      resendToken();
+      resendToken(dispatch, redirect, setLoading);
+      return;
     }
 
-    return;
-
-    actionVerify(code, dispatch, redirect);
-    // dispatch(
-    //   verify({
-    //     otp: +code,
-    //   })
-    // );
+    actionVerify(code, dispatch, redirect, setOtp);
   };
 
   const Completionist = () => (
